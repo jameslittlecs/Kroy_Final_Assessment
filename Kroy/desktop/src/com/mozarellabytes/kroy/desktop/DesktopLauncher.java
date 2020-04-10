@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.height = Constants.GAME_HEIGHT;
 		config.width = Constants.GAME_WIDTH;
 		config.resizable = false;
+		config.fullscreen = true;
 		config.title = "Kroy";
 		config.vSyncEnabled = true;
 		config.forceExit = true;
