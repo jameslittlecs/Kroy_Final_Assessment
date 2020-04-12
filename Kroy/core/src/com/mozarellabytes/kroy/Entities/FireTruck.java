@@ -573,7 +573,7 @@ public class FireTruck extends Sprite {
         return this.HP;
     }
 
-    public void setHP(int hp) { this.HP = hp; }
+    public void setHP(float hp) { this.HP = hp; }
 
     public float getReserve() {
         return this.reserve;
@@ -618,5 +618,9 @@ public class FireTruck extends Sprite {
     public  float getRange(){
         return this.type.getRange();
     }
+
+	public void setReserve(float reserve) {
+		this.reserve = reserve;
+	}
 }
 

@@ -1,13 +1,19 @@
 package com.mozarellabytes.kroy.Screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.Json;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.MenuInputHandler;
 import com.mozarellabytes.kroy.Utilities.SoundFX;
+
+import Save.GameData;
+import Save.SaveManager;
 
 /** This screen is shown after the splash screen and is
  * where the player can choose to start the game or view
@@ -200,7 +206,10 @@ public class MenuScreen implements Screen {
 
     /** Changes the screen from menu screen to game screen */
     public void toGameScreen() {
-        game.setScreen(new GameScreen(game));
+    	
+        FileHandle fileHandle = Gdx.files.local("saves/save.json");
+    	 
+        game.setScreen(new GameScreen(game, SaveManager.loadGame(fileHandle)));
         this.dispose();
     }
 

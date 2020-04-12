@@ -29,12 +29,6 @@ import java.util.LinkedList;
 
 public class Patrol extends Sprite {
 
-
-/** Enables access to functions in GameScreen */
-
-    private final GameScreen gameScreen;
-
-
 /** Defines set of pre-defined attributes */
 
     public final PatrolType type;
@@ -122,10 +116,9 @@ public class Patrol extends Sprite {
      * @param type          used to have predefined attributes
      */
 
-    public Patrol(GameScreen gameScreen, PatrolType type) {
+    public Patrol(PatrolType type) {
         super(type.getTexture());
 
-        this.gameScreen = gameScreen;
         this.type = type;
         this.HP = type.getMaxHP();
         this.position = new Vector2(type.getPoint1().x + 1,type.getPoint1().y);

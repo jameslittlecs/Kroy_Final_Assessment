@@ -3,11 +3,17 @@ package com.mozarellabytes.kroy.Utilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.Json;
 import com.mozarellabytes.kroy.Entities.FireTruck;
 import com.mozarellabytes.kroy.Entities.Fortress;
 import com.mozarellabytes.kroy.Screens.GameScreen;
+
+import Save.GameData;
+import Save.SaveManager;
 
 public class GameInputHandler implements InputProcessor {
 
@@ -272,6 +278,11 @@ public class GameInputHandler implements InputProcessor {
 
         if (gui.getHomeButton().contains(screenCoords)) {
             gameScreen.toHomeScreen();
+            
+            SaveManager.saveGame(gameScreen, Gdx.files.local("saves/save.json"));
+
+            
+            
         } else {
             gui.idleHomeButton();
         }

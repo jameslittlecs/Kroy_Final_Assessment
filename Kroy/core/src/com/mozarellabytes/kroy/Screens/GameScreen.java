@@ -14,6 +14,8 @@ import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.*;
 
+import Save.EngineData;
+import Save.GameData;
 
 import java.util.ArrayList;
 
@@ -103,7 +105,8 @@ public class GameScreen implements Screen {
      *
      * @param game LibGdx game
      */
-    public GameScreen(Kroy game) {
+    public GameScreen(Kroy game, GameData gameData) {
+    	
         this.game = game;
         fpsCounter = new FPSLogger();
 
@@ -138,11 +141,20 @@ public class GameScreen implements Screen {
                 mapLayers.getIndex("transparentStructures")};
 
         station = new FireStation(3, 7);
-
-        spawn(FireTruckType.Emerald);
-        spawn(FireTruckType.Amethyst);
-        spawn(FireTruckType.Sapphire);
-        spawn(FireTruckType.Ruby);
+        
+        if (!(gameData == null)) {
+        	
+        	for(EngineData engineData : gameData.getEngines()) {
+        		station.spawn(engineData.createEngine(this));
+        		gameState.addFireTruck();
+        	}
+        }
+        else {
+            spawn(FireTruckType.Emerald);
+            spawn(FireTruckType.Amethyst);
+            spawn(FireTruckType.Sapphire);
+            spawn(FireTruckType.Ruby);
+        }
 
         fortresses = new ArrayList<Fortress>();
         fortresses.add(new Fortress(12, 23.5f, FortressType.Revs));
@@ -153,14 +165,14 @@ public class GameScreen implements Screen {
         fortresses.add(new Fortress(44f, 11f, FortressType.CentralHall));
 
         patrols = new ArrayList<Patrol>();
-        patrols.add(new Patrol(this,PatrolType.Blue));
-        patrols.add(new Patrol(this,PatrolType.Green));
-        patrols.add(new Patrol(this,PatrolType.Peach));
-        patrols.add(new Patrol(this,PatrolType.Violet));
-        patrols.add(new Patrol(this,PatrolType.Yellow));
-        patrols.add(new Patrol(this,PatrolType.Station));
+        patrols.add(new Patrol(PatrolType.Blue));
+        patrols.add(new Patrol(PatrolType.Green));
+        patrols.add(new Patrol(PatrolType.Peach));
+        patrols.add(new Patrol(PatrolType.Violet));
+        patrols.add(new Patrol(PatrolType.Yellow));
+        patrols.add(new Patrol(PatrolType.Station));
 
-        deadEntities = new ArrayList<>(7                           );
+        deadEntities = new ArrayList<>(7);
 
 
         // sets the origin point to which all of the polygon's local vertices are relative to.
@@ -392,7 +404,7 @@ public class GameScreen implements Screen {
             if (patrol.getHP() <= 0) {
                 patrols.remove(patrol);
                 if((patrol.getType().equals(PatrolType.Station))&&(!gameState.hasStationDestoyed())){
-                    patrols.add(new Patrol(this,PatrolType.Station));
+                    patrols.add(new Patrol(PatrolType.Station));
                 }
             }
         }
@@ -588,6 +600,14 @@ public class GameScreen implements Screen {
     public PlayState getState() {
         return this.state;
     }
+
+	public DifficultyControl getDifficultyControl() {
+		return difficultyControl;
+	}
+
+	public ArrayList<Patrol> getPatrols() {
+		return patrols;
+	}
 
 }
 
