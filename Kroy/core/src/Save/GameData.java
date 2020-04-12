@@ -10,7 +10,7 @@ public class GameData {
 	private GameState gameState;
 	private ArrayList<EngineData> engines;
 //	private ArrayList<FortressData> fortresses;
-//	private ArrayList<PatrolData> patrols;
+	private ArrayList<PatrolData> patrols;
 
 	public DifficultyControl getDifficultyControl() {
 		return difficultyControl;
@@ -43,12 +43,12 @@ public class GameData {
 //	public void setFortresses(ArrayList<FortressData> fortresses) {
 //		this.fortresses = fortresses;
 //	}
-//
-//	public ArrayList<PatrolData> getPatrols() {
-//		return patrols;
-//	}
-//
-//	public void setPatrols(ArrayList<PatrolData> patrols) {
-//		this.patrols = patrols;
-//	}
+
+	public ArrayList<PatrolData> getPatrols() {
+		return patrols;
+	}
+
+	public void setPatrols(ArrayList<PatrolData> patrols) {
+		this.patrols = patrols;
+	}
 }

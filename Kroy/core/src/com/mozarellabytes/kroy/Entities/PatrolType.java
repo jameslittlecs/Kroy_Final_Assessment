@@ -1,11 +1,9 @@
 package com.mozarellabytes.kroy.Entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
 
 /**
  * FireTruckType is an enum defining the trucks that can be present in the game.

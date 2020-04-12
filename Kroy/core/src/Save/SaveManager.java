@@ -3,9 +3,11 @@ package Save;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.mozarellabytes.kroy.Entities.FireTruck;
+import com.mozarellabytes.kroy.Entities.Patrol;
 import com.mozarellabytes.kroy.Screens.GameScreen;
 
 public class SaveManager {
@@ -26,7 +28,12 @@ public class SaveManager {
 		
 		gameData.setDifficultyControl(gameScreen.getDifficultyControl());
 		gameData.setGameState(gameScreen.gameState);
+		gameData.setEngines(getEngineData(gameScreen));
+		gameData.setPatrols(getPatrolData(gameScreen));
 
+		fileHandle.writeString(Base64Coder.encodeString(json.prettyPrint(gameData)), false);
+	}
+	private static ArrayList<EngineData> getEngineData(GameScreen gameScreen) {
 		ArrayList<EngineData> engines = new ArrayList<EngineData>();
 		for (FireTruck truck : gameScreen.getStation().getTrucks()) {
 			
@@ -38,8 +45,18 @@ public class SaveManager {
 			
 			engines.add(engineData);
 		}
-		gameData.setEngines(engines);
-
-		fileHandle.writeString(Base64Coder.encodeString(json.prettyPrint(gameData)), false);
+		return engines;
+	}
+	private static ArrayList<PatrolData> getPatrolData(GameScreen gameScreen) {
+		ArrayList<PatrolData> patrols = new ArrayList<PatrolData>();
+		for (Patrol patrol : gameScreen.getPatrols()) {
+			PatrolData patrolData = new PatrolData();
+			patrolData.setPosition(new Vector2(Math.round(patrol.getPosition().x),Math.round(patrol.getPosition().y)));
+			patrolData.setHP(patrol.getHP());
+			patrolData.setType(patrol.type);
+			
+			patrols.add(patrolData);
+		}
+		return patrols;
 	}
 }

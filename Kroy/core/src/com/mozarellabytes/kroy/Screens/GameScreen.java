@@ -16,6 +16,7 @@ import com.mozarellabytes.kroy.Utilities.*;
 
 import Save.EngineData;
 import Save.GameData;
+import Save.PatrolData;
 
 import java.util.ArrayList;
 
@@ -141,6 +142,8 @@ public class GameScreen implements Screen {
                 mapLayers.getIndex("transparentStructures")};
 
         station = new FireStation(3, 7);
+        patrols = new ArrayList<Patrol>();
+        fortresses = new ArrayList<Fortress>();
         
         if (!(gameData == null)) {
         	
@@ -148,29 +151,30 @@ public class GameScreen implements Screen {
         		station.spawn(engineData.createEngine(this));
         		gameState.addFireTruck();
         	}
+        	for(PatrolData patrolData : gameData.getPatrols()) {
+        		patrols.add(patrolData.createPatrol());
+        	}
         }
         else {
             spawn(FireTruckType.Emerald);
             spawn(FireTruckType.Amethyst);
             spawn(FireTruckType.Sapphire);
             spawn(FireTruckType.Ruby);
+            
+            patrols.add(new Patrol(PatrolType.Blue, null));
+            patrols.add(new Patrol(PatrolType.Green, null));
+            patrols.add(new Patrol(PatrolType.Peach, null));
+            patrols.add(new Patrol(PatrolType.Violet, null));
+            patrols.add(new Patrol(PatrolType.Yellow, null));
+            patrols.add(new Patrol(PatrolType.Station, null));
         }
 
-        fortresses = new ArrayList<Fortress>();
         fortresses.add(new Fortress(12, 23.5f, FortressType.Revs));
         fortresses.add(new Fortress(30.5f, 22.5f, FortressType.Walmgate));
         fortresses.add(new Fortress(16.5f, 3.5f, FortressType.Railway));
         fortresses.add(new Fortress(32f, 1.5f, FortressType.Clifford));
         fortresses.add(new Fortress(41.95f, 23.5f, FortressType.Museum));
         fortresses.add(new Fortress(44f, 11f, FortressType.CentralHall));
-
-        patrols = new ArrayList<Patrol>();
-        patrols.add(new Patrol(PatrolType.Blue));
-        patrols.add(new Patrol(PatrolType.Green));
-        patrols.add(new Patrol(PatrolType.Peach));
-        patrols.add(new Patrol(PatrolType.Violet));
-        patrols.add(new Patrol(PatrolType.Yellow));
-        patrols.add(new Patrol(PatrolType.Station));
 
         deadEntities = new ArrayList<>(7);
 
@@ -404,7 +408,7 @@ public class GameScreen implements Screen {
             if (patrol.getHP() <= 0) {
                 patrols.remove(patrol);
                 if((patrol.getType().equals(PatrolType.Station))&&(!gameState.hasStationDestoyed())){
-                    patrols.add(new Patrol(PatrolType.Station));
+                    patrols.add(new Patrol(PatrolType.Station, null));
                 }
             }
         }
