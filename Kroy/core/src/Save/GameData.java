@@ -3,14 +3,16 @@ package Save;
 import java.util.ArrayList;
 
 import com.mozarellabytes.kroy.GameState;
+import com.mozarellabytes.kroy.Entities.DestroyedEntity;
 import com.mozarellabytes.kroy.Utilities.DifficultyControl;
 
 public class GameData {
 	private DifficultyControl difficultyControl;
 	private GameState gameState;
 	private ArrayList<EngineData> engines;
-//	private ArrayList<FortressData> fortresses;
+	private ArrayList<FortressData> fortresses;
 	private ArrayList<PatrolData> patrols;
+	private ArrayList<DestroyedEntityData> destroyedEntities;
 
 	public DifficultyControl getDifficultyControl() {
 		return difficultyControl;
@@ -36,13 +38,13 @@ public class GameData {
 		this.engines = engines;
 	}
 
-//	public ArrayList<FortressData> getFortresses() {
-//		return fortresses;
-//	}
-//
-//	public void setFortresses(ArrayList<FortressData> fortresses) {
-//		this.fortresses = fortresses;
-//	}
+	public ArrayList<FortressData> getFortresses() {
+		return fortresses;
+	}
+
+	public void setFortresses(ArrayList<FortressData> fortresses) {
+		this.fortresses = fortresses;
+	}
 
 	public ArrayList<PatrolData> getPatrols() {
 		return patrols;
@@ -50,5 +52,13 @@ public class GameData {
 
 	public void setPatrols(ArrayList<PatrolData> patrols) {
 		this.patrols = patrols;
+	}
+
+	public ArrayList<DestroyedEntityData> getDestroyedEntities() {
+		return destroyedEntities;
+	}
+
+	public void setDestroyedEntities(ArrayList<DestroyedEntityData> destroyedEntities) {
+		this.destroyedEntities = destroyedEntities;
 	}
 }

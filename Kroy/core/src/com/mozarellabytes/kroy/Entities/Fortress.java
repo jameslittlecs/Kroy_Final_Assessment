@@ -160,4 +160,8 @@ public class Fortress {
         return this.fortressType.getRange();
     }
 
+	public void setHP(float hP) {
+		HP = hP;
+	}
+
 }

@@ -46,4 +46,12 @@ public class DestroyedEntity {
     public void draw(Batch mapBatch){
         mapBatch.draw(this.deadTexture, this.area.x, this.area.y, this.area.width, this.area.height);
     }
+
+	public Texture getDeadTexture() {
+		return deadTexture;
+	}
+
+	public Rectangle getArea() {
+		return area;
+	}
 }
