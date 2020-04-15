@@ -85,6 +85,9 @@ public class GUI {
 
     private GlyphLayout layout;
 
+	private Rectangle saveButton;
+	private Texture saveButtonTexture;
+
     /** Constructor for GUI
      *
      * @param game          The Kroy game
@@ -136,6 +139,8 @@ public class GUI {
         soundButton = new Rectangle(Gdx.graphics.getWidth() - 70, Gdx.graphics.getHeight() - 33, 30, 30);
         pauseButton = new Rectangle(Gdx.graphics.getWidth() - 107, Gdx.graphics.getHeight() - 33, 30, 30);
         infoButton = new Rectangle(Gdx.graphics.getWidth() - 144, Gdx.graphics.getHeight() - 33, 30, 30);
+        saveButton = new Rectangle(Gdx.graphics.getWidth() - 181, Gdx.graphics.getHeight() - 33, 30, 30);
+        saveButtonTexture = new Texture(Gdx.files.internal("ui/save_idle.png"), true);
 
         pauseCamera = new OrthographicCamera();
         pauseCamera.setToOrtho(false, Gdx.graphics.getDisplayMode().width, Gdx.graphics.getDisplayMode().height);
@@ -284,6 +289,7 @@ public class GUI {
         game.batch.draw(currentHomeTexture, homeButton.x, homeButton.y, homeButton.width, homeButton.height);
         game.batch.draw(currentPauseTexture, pauseButton.x, pauseButton.y, pauseButton.width, pauseButton.height);
         game.batch.draw(currentInfoTexture, infoButton.x, infoButton.y, infoButton.width, infoButton.height);
+        game.batch.draw(saveButtonTexture, saveButton.x, saveButton.y, saveButton.width, saveButton.height);
         game.batch.end();
     }
 
@@ -447,5 +453,10 @@ public class GUI {
     public Rectangle getPauseButton() { return this.pauseButton; }
 
     public Rectangle getInfoButton() { return this.infoButton; }
-
+    
+    public Rectangle getSaveButton() { return this.saveButton; }
+    
+    public void clickedSaveButton() {
+    	
+    }
 }

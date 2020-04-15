@@ -3,6 +3,7 @@ package com.mozarellabytes.kroy.Utilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mozarellabytes.kroy.Screens.MenuScreen;
@@ -73,6 +74,8 @@ public class MenuInputHandler implements InputProcessor {
             menu.clickedControlsButton();
         } else if (menu.getSoundButton().contains(position.x, position.y)) {
             menu.clickedSoundButton();
+        } else if (menu.getLoadButton().contains(position.x, position.y)) {
+        	menu.setLoadTexture(new Texture(Gdx.files.internal("ui/load_clicked.png"), true));
         }
         return true;
     }
@@ -95,10 +98,13 @@ public class MenuInputHandler implements InputProcessor {
             menu.toControlScreen();
         } else if (menu.getSoundButton().contains(position.x, position.y)){
             menu.changeSound();
-        } else {
+        } else if (menu.getLoadButton().contains(position.x, position.y)) {
+        	menu.toLoadScreen();
+        }else {
             menu.idleStartButton();
             menu.idleControlsButton();
             menu.idleSoundButton();
+            menu.setLoadTexture(new Texture(Gdx.files.internal("ui/load_idle.png"), true));
         }
         return true;
     }

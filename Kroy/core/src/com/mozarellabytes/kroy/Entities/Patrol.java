@@ -149,7 +149,7 @@ public class Patrol extends Sprite {
                     }
                 }
             }
-            addTileToPath(this.position, previousTile);
+            addTileToPath(this.nextTile, previousTile);
         }
         current=path.getHead();
     }

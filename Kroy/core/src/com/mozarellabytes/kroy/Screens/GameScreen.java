@@ -628,5 +628,9 @@ public class GameScreen implements Screen {
 		return deadEntities;
 	}
 
+	public Kroy getGame() {
+		return game;
+	}
+
 }
 

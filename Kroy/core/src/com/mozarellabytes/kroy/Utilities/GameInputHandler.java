@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Json;
 import com.mozarellabytes.kroy.Entities.FireTruck;
 import com.mozarellabytes.kroy.Entities.Fortress;
 import com.mozarellabytes.kroy.Screens.GameScreen;
+import com.mozarellabytes.kroy.Screens.LoadScreen;
 
 import Save.GameData;
 import Save.SaveManager;
@@ -278,11 +279,6 @@ public class GameInputHandler implements InputProcessor {
 
         if (gui.getHomeButton().contains(screenCoords)) {
             gameScreen.toHomeScreen();
-            
-            SaveManager.saveGame(gameScreen, Gdx.files.local("saves/save.json"));
-
-            
-            
         } else {
             gui.idleHomeButton();
         }
@@ -301,6 +297,9 @@ public class GameInputHandler implements InputProcessor {
 
         if (gui.getInfoButton().contains(screenCoords)){
             gameScreen.toControlScreen();
+        }
+        if (gui.getSaveButton().contains(screenCoords)) {
+            gameScreen.getGame().setScreen(new LoadScreen(gameScreen.getGame(), gameScreen, false));
         }
     }
 }
