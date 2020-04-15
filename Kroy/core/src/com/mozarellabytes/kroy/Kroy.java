@@ -44,40 +44,11 @@ public class Kroy extends Game {
 
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
-
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Magero.ttf"));
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-		parameter.size = 60;
-		font60 = generator.generateFont(parameter);
-		parameter.size = 26;
-		font26 = generator.generateFont(parameter);
-		parameter.size = 19;
-		font19 = generator.generateFont(parameter);
-		parameter.size = 15;
-		font15 = generator.generateFont(parameter);
-		parameter.size = 11;
-		font11 = generator.generateFont(parameter);
-		parameter.size = 50;
-		font50 = generator.generateFont(parameter);
-		parameter.size = 25;
-		font25 = generator.generateFont(parameter);
-		parameter.size = 33;
-		font33 = generator.generateFont(parameter);
-		parameter.size = 33;
-		parameter.color = Color.FIREBRICK;
-		font33Red = generator.generateFont(parameter);
-		parameter.size = 120;
-		font120 = generator.generateFont(parameter);
-		parameter.size = 26;
-		parameter.color = Color.BLACK;
-		font26b = generator.generateFont(parameter);
-		parameter.size = 50;
-		font50b = generator.generateFont(parameter);
-
+		generateFonts();
 		this.setScreen(new SplashScreen(this));
 
 	}
+	
 	//Kroy game, Screen previousScreen, FireTruck firetruck, Patrol patrol
 	@Override
 	public void render () {
@@ -98,5 +69,29 @@ public class Kroy extends Game {
 		font50.dispose();
 		font60.dispose();
 		font26b.dispose();
+	}
+	private void generateFonts() {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Magero.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+		font60 = generator.generateFont(changeParameterSize(parameter, 60));
+		font26 = generator.generateFont(changeParameterSize(parameter, 26));
+		font19 = generator.generateFont(changeParameterSize(parameter, 19));
+		font15 = generator.generateFont(changeParameterSize(parameter, 15));
+		font11 = generator.generateFont(changeParameterSize(parameter, 11));
+		font50 = generator.generateFont(changeParameterSize(parameter, 50));
+		font25 = generator.generateFont(changeParameterSize(parameter, 25));
+		font33 = generator.generateFont(changeParameterSize(parameter, 33));
+		parameter.color = Color.FIREBRICK;
+		font33Red = generator.generateFont(changeParameterSize(parameter, 33));
+		font120 = generator.generateFont(changeParameterSize(parameter, 120));
+		parameter.color = Color.BLACK;
+		font26b = generator.generateFont(changeParameterSize(parameter, 26));
+		font50b = generator.generateFont(changeParameterSize(parameter, 50));
+	}
+
+	private FreeTypeFontGenerator.FreeTypeFontParameter changeParameterSize(FreeTypeFontGenerator.FreeTypeFontParameter parameter, int size) {
+		parameter.size = size;
+		return parameter;
 	}
 }

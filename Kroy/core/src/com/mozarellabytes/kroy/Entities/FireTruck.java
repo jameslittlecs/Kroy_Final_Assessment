@@ -1,8 +1,6 @@
 package com.mozarellabytes.kroy.Entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -586,7 +584,7 @@ public class FireTruck extends Sprite {
         return this.HP;
     }
 
-    public void setHP(float f) { this.HP = f; }
+    public void setHP(float hp) { this.HP = hp; }
 
     public float getReserve() {
         return this.reserve;
@@ -658,6 +656,10 @@ public class FireTruck extends Sprite {
 
 	public void setAP(float aP) {
 		AP = aP;
+
+	public void setReserve(float reserve) {
+		this.reserve = reserve;
+
 	}
 }
 

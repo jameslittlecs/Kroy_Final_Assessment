@@ -1,23 +1,18 @@
 package com.mozarellabytes.kroy.Entities;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Queue;
 import com.mozarellabytes.kroy.Entities.FireStation;
-import com.mozarellabytes.kroy.Screens.GameScreen;
 import com.mozarellabytes.kroy.Utilities.CircularLinkedList;
 import com.mozarellabytes.kroy.Utilities.Node;
 
-import com.mozarellabytes.kroy.Utilities.SoundFX;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 /**
@@ -28,12 +23,6 @@ import java.util.LinkedList;
  */
 
 public class Patrol extends Sprite {
-
-
-/** Enables access to functions in GameScreen */
-
-    private final GameScreen gameScreen;
-
 
 /** Defines set of pre-defined attributes */
 
@@ -72,20 +61,6 @@ public class Patrol extends Sprite {
     private boolean moving;
 
 
-/** If the truck is attacking a Fortress
-     *
-     * <code>true</code> 'A' key is pressed
-     * <code>false</code> 'A' key is not pressed */
-
-    private boolean attacking;
-
-
-/** Whether the truck has an unresolved collision
-     * with another truck */
-
-    private boolean inCollision;
-
-
 /** Used to check if the truck's image should be
      * changed to match the direction it is facing */
 
@@ -93,26 +68,10 @@ public class Patrol extends Sprite {
 
     private Vector2 nextTile;
 
-
-    /** Time since fortress has attacked the truck */
-
-    private long timeOfLastAttack;
-
-
-    private Vector2 target;
-
     /** List of particles that the truck uses to attack
      * a Fortress */
 
     private final ArrayList<BlasterParticle> spray;
-
-
-/** Texture for each
-     * patrol*/
-
-    private final Texture texture;
-
-
 
 /**
      * Constructs a new Patrol at a position and of a certain type
@@ -122,23 +81,25 @@ public class Patrol extends Sprite {
      * @param type          used to have predefined attributes
      */
 
-    public Patrol(GameScreen gameScreen, PatrolType type) {
+    public Patrol(PatrolType type, Vector2 position) {
         super(type.getTexture());
 
-        this.gameScreen = gameScreen;
         this.type = type;
         this.HP = type.getMaxHP();
-        this.position = new Vector2(type.getPoint1().x + 1,type.getPoint1().y);
+        
+        if (position == null) {
+        	this.position = new Vector2(type.getPoint1().x + 1,type.getPoint1().y);
+        }
+        else {
+        	this.position = position;
+        }
+        
         this.path = new CircularLinkedList();
         this.trailPath = new Queue<Vector2>();
         this.moving = true;
-        this.attacking = false;
-        this.inCollision = false;
         this.spray = new ArrayList<BlasterParticle>();
-        this.timeOfLastAttack = System.currentTimeMillis();
-        this.nextTile=position;
-        this.previousTile=position;
-        this.texture = type.getTexture();
+        this.nextTile = this.position;
+        this.previousTile = this.position;
 
         definePath();
     }
@@ -151,12 +112,13 @@ public class Patrol extends Sprite {
 
 
     public void definePath(){
-        addTileToPath(this.position,type.getPoint1());
+//        addTileToPath(this.position,type.getPoint1());
 
         boolean fullCycle=false;
         int counter=0;
 
         while(!fullCycle){
+        	
             if(this.type.getTarget().x>this.position.x){
                 nextTile.x=this.position.x+1;
             }
@@ -187,7 +149,7 @@ public class Patrol extends Sprite {
                     }
                 }
             }
-            addTileToPath(this.position, previousTile);
+            addTileToPath(this.nextTile, previousTile);
         }
         current=path.getHead();
     }
@@ -328,5 +290,15 @@ public class Patrol extends Sprite {
     public void setPositionY(float y) {this.position.y = y;}
     public float getPositionX() {return nextTile.x;}
     public float getPositionY() {return nextTile.y;}
+
+
+	public void setHP(float hP) {
+		HP = hP;
+	}
+
+
+	public void setPosition(Vector2 position) {
+		this.position = position;
+	}
 
 }

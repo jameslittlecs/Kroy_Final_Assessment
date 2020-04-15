@@ -14,6 +14,11 @@ import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.*;
 
+import Save.DestroyedEntityData;
+import Save.EngineData;
+import Save.FortressData;
+import Save.GameData;
+import Save.PatrolData;
 
 import java.util.ArrayList;
 
@@ -66,7 +71,7 @@ public class GameScreen implements Screen {
      * track of trucks/fortresses and will end the game
      * once an end game condition has been met
      */
-    public final GameState gameState;
+    public GameState gameState;
 
     /** List of Fortresses currently active on the map */
     private final ArrayList<Fortress> fortresses;
@@ -103,7 +108,8 @@ public class GameScreen implements Screen {
      *
      * @param game LibGdx game
      */
-    public GameScreen(Kroy game) {
+    public GameScreen(Kroy game, GameData gameData) {
+    	
         this.game = game;
         fpsCounter = new FPSLogger();
 
@@ -138,30 +144,51 @@ public class GameScreen implements Screen {
                 mapLayers.getIndex("transparentStructures")};
 
         station = new FireStation(3, 7);
-
-        spawn(FireTruckType.Emerald);
-        spawn(FireTruckType.Amethyst);
-        spawn(FireTruckType.Sapphire);
-        spawn(FireTruckType.Ruby);
-
-        fortresses = new ArrayList<Fortress>();
-        fortresses.add(new Fortress(12, 23.5f, FortressType.Revs));
-        fortresses.add(new Fortress(30.5f, 22.5f, FortressType.Walmgate));
-        fortresses.add(new Fortress(16.5f, 3.5f, FortressType.Railway));
-        fortresses.add(new Fortress(32f, 1.5f, FortressType.Clifford));
-        fortresses.add(new Fortress(41.95f, 23.5f, FortressType.Museum));
-        fortresses.add(new Fortress(44f, 11f, FortressType.CentralHall));
-
         patrols = new ArrayList<Patrol>();
-        patrols.add(new Patrol(this,PatrolType.Blue));
-        patrols.add(new Patrol(this,PatrolType.Green));
-        patrols.add(new Patrol(this,PatrolType.Peach));
-        patrols.add(new Patrol(this,PatrolType.Violet));
-        patrols.add(new Patrol(this,PatrolType.Yellow));
-        patrols.add(new Patrol(this,PatrolType.Station));
-
-        deadEntities = new ArrayList<>(7                           );
-
+        fortresses = new ArrayList<Fortress>();
+        deadEntities = new ArrayList<>(7);
+        
+        if (!(gameData == null)) {
+        	
+        	for(EngineData engineData : gameData.getEngines()) {
+        		station.spawn(engineData.createEngine(this));
+        		gameState.addFireTruck();
+        	}
+        	for(PatrolData patrolData : gameData.getPatrols()) {
+        		patrols.add(patrolData.createPatrol());
+        	}
+        	for(FortressData fortressData : gameData.getFortresses()) {
+        		fortresses.add(fortressData.createFortress());
+        	}
+        	for(DestroyedEntityData destroyedEntityData : gameData.getDestroyedEntities()) {
+        		deadEntities.add(destroyedEntityData.createDestroyedEntity());
+        	}
+        	
+        	
+        	this.gameState = gameData.getGameState();
+        	this.difficultyControl = gameData.getDifficultyControl();
+        }
+        else {
+            spawn(FireTruckType.Emerald);
+            spawn(FireTruckType.Amethyst);
+            spawn(FireTruckType.Sapphire);
+            spawn(FireTruckType.Ruby);
+            
+            patrols.add(new Patrol(PatrolType.Blue, null));
+            patrols.add(new Patrol(PatrolType.Green, null));
+            patrols.add(new Patrol(PatrolType.Peach, null));
+            patrols.add(new Patrol(PatrolType.Violet, null));
+            patrols.add(new Patrol(PatrolType.Yellow, null));
+            patrols.add(new Patrol(PatrolType.Station, null));
+            
+            fortresses.add(new Fortress(12, 23.5f, FortressType.Revs));
+            fortresses.add(new Fortress(30.5f, 22.5f, FortressType.Walmgate));
+            fortresses.add(new Fortress(16.5f, 3.5f, FortressType.Railway));
+            fortresses.add(new Fortress(32f, 1.5f, FortressType.Clifford));
+            fortresses.add(new Fortress(41.95f, 23.5f, FortressType.Museum));
+            fortresses.add(new Fortress(44f, 11f, FortressType.CentralHall));
+            
+        }
 
         // sets the origin point to which all of the polygon's local vertices are relative to.
         for (FireTruck truck : station.getTrucks()) {
@@ -392,7 +419,7 @@ public class GameScreen implements Screen {
             if (patrol.getHP() <= 0) {
                 patrols.remove(patrol);
                 if((patrol.getType().equals(PatrolType.Station))&&(!gameState.hasStationDestoyed())){
-                    patrols.add(new Patrol(this,PatrolType.Station));
+                    patrols.add(new Patrol(PatrolType.Station, null));
                 }
             }
         }
@@ -588,6 +615,22 @@ public class GameScreen implements Screen {
     public PlayState getState() {
         return this.state;
     }
+
+	public DifficultyControl getDifficultyControl() {
+		return difficultyControl;
+	}
+
+	public ArrayList<Patrol> getPatrols() {
+		return patrols;
+	}
+
+	public ArrayList<DestroyedEntity> getDeadEntities() {
+		return deadEntities;
+	}
+
+	public Kroy getGame() {
+		return game;
+	}
 
 }
 

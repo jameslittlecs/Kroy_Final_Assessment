@@ -1,6 +1,7 @@
 package com.mozarellabytes.kroy.Screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.MenuInputHandler;
 import com.mozarellabytes.kroy.Utilities.SoundFX;
+
+import Save.SaveManager;
 
 /** This screen is shown after the splash screen and is
  * where the player can choose to start the game or view
@@ -65,6 +68,9 @@ public class MenuScreen implements Screen {
     /** Texture of the sound off button when it has been clicked */
     private final Texture soundOffClickedTexture;
     private Texture currentSoundTexture;
+    
+    private Rectangle loadButton;
+    private Texture loadTexture;
 
     /** Constructs the MenuScreen
      *
@@ -97,6 +103,8 @@ public class MenuScreen implements Screen {
         soundOnClickedTexture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
         soundOffClickedTexture = new Texture(Gdx.files.internal("ui/sound_off_clicked.png"), true);
         soundOffClickedTexture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+        
+        initialiseLoadButton();
 
         MenuInputHandler ih = new MenuInputHandler(this);
 
@@ -135,7 +143,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-
+    	Gdx.input.setInputProcessor(new MenuInputHandler(this));
     }
 
     /** Renders the menu screen consisting of the background and the start, controls and sound buttons.
@@ -156,6 +164,7 @@ public class MenuScreen implements Screen {
         game.batch.draw(currentStartTexture, startButton.x, startButton.y, startButton.width, startButton.height);
         game.batch.draw(currentControlsTexture, controlsButton.x, controlsButton.y, controlsButton.width, controlsButton.height);
         game.batch.draw(currentSoundTexture, soundButton.x, soundButton.y, soundButton.width, soundButton.height);
+        game.batch.draw(loadTexture, loadButton.x, loadButton.y, loadButton.width, loadButton.height);
         game.batch.end();
 
     }
@@ -195,14 +204,20 @@ public class MenuScreen implements Screen {
         soundOnClickedTexture.dispose();
         soundOffIdleTexture.dispose();
         soundOffClickedTexture.dispose();
+        loadTexture.dispose();
         SoundFX.sfx_menu.stop();
     }
 
     /** Changes the screen from menu screen to game screen */
     public void toGameScreen() {
-        game.setScreen(new GameScreen(game));
+        game.setScreen(new GameScreen(game, null));
         this.dispose();
     }
+    public void toLoadScreen() {   	 
+        game.setScreen(new LoadScreen(game, this, true));
+        this.dispose();
+    }
+    
 
     /** Changes the texture of the start button when it has been clicked on */
     public void clickedStartButton() {
@@ -269,4 +284,21 @@ public class MenuScreen implements Screen {
     public Rectangle getControlsButton() { return controlsButton; }
 
     public Rectangle getSoundButton() {return soundButton; }
+    
+    public Rectangle getLoadButton() {return loadButton; }
+    
+    private void initialiseLoadButton() {
+    	this.loadTexture = new Texture(Gdx.files.internal("ui/load_idle.png"), true);
+    	this.loadTexture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+    	
+    	loadButton = new Rectangle();
+        loadButton.width = (float) (loadTexture.getWidth()*0.75);
+        loadButton.height = (float) (loadTexture.getHeight()*0.75);
+        loadButton.x = (int) (camera.viewportWidth/2 - loadButton.width/2);
+        loadButton.y = (int) ((camera.viewportHeight/2 - loadButton.height/2)*0.59);
+    }
+
+	public void setLoadTexture(Texture loadTexture) {
+		this.loadTexture = loadTexture;
+	}
 }
