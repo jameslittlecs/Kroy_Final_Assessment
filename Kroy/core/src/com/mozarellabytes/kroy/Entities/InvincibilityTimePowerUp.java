@@ -1,20 +1,20 @@
 package com.mozarellabytes.kroy.Entities;
 
-public class SpeedTimePowerUp extends TimePowerUp{
+public class InvincibilityTimePowerUp extends TimePowerUp{
 
-	private final float SPEEDCHANGE = 2f;
-	
 	@Override
 	void activatePowerUp() {
 		// TODO Auto-generated method stub
-		getTruck().setSpeed(getTruck().getSpeed() + SPEEDCHANGE);
+		getTruck().setCanTakeDamage(false);
 		startTime();
+		
 	}
 
 	@Override
 	void deactivatePowerUp() {
 		// TODO Auto-generated method stub
-		getTruck().setSpeed(getTruck().getSpeed() - SPEEDCHANGE);
+		getTruck().setCanTakeDamage(false);
 	}
 
+	
 }

@@ -3,12 +3,15 @@ package com.mozarellabytes.kroy.Entities;
 import java.util.concurrent.TimeUnit;
 
 public abstract class TimePowerUp extends PowerUp{
-	int powerUpDuration = 5;
+	abstract void deactivatePowerUp();
+	
+	private final int POWERUPDURATION = 5;
 	long startTime, currentTime, endTime;
+	
 	
 	public void startTime() {
 		startTime = System.currentTimeMillis();
-		endTime = startTime + TimeUnit.MINUTES.toMillis(5);
+		endTime = startTime + TimeUnit.MINUTES.toMillis(POWERUPDURATION);
 	}
 	
 	public void checkTime() {
