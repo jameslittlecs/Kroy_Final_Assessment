@@ -96,6 +96,16 @@ public class FireTruck extends Sprite {
     private Vector2[] newPath;
 
     private Vector2 previous;
+    
+    //Changed for speed power up
+    private float speed;
+    
+    //Changed for damage power up
+    private float AP;
+    
+    //NOT IMPLEMENTED. CHECK IF TRUE WHEN TAKING DAMAGE. WILL BE TURNED FALSE
+    //FOR INVINCIBILITY POWER UP
+    private boolean canTakeDamage;
     /**
      * Constructs a new FireTruck at a position and of a certain type
      * which have been passed in
@@ -118,6 +128,9 @@ public class FireTruck extends Sprite {
         this.inCollision = false;
         this.spray = new ArrayList<WaterParticle>();
         this.timeOfLastAttack = System.currentTimeMillis();
+        this.setSpeed(type.getSpeed());
+        this.setCanTakeDamage(true);
+        this.setAP(type.getAP());
     }
 
     /**
@@ -573,10 +586,14 @@ public class FireTruck extends Sprite {
         return this.HP;
     }
 
-    public void setHP(int hp) { this.HP = hp; }
+    public void setHP(float f) { this.HP = f; }
 
     public float getReserve() {
         return this.reserve;
+    }
+    
+    public void setReserve(float reserve) {
+    	this.reserve = reserve;
     }
 
     public FireTruckType getType() {
@@ -618,5 +635,29 @@ public class FireTruck extends Sprite {
     public  float getRange(){
         return this.type.getRange();
     }
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+	public boolean isCanTakeDamage() {
+		return canTakeDamage;
+	}
+
+	public void setCanTakeDamage(boolean canTakeDamage) {
+		this.canTakeDamage = canTakeDamage;
+	}
+
+	public float getAP() {
+		return AP;
+	}
+
+	public void setAP(float aP) {
+		AP = aP;
+	}
 }
 

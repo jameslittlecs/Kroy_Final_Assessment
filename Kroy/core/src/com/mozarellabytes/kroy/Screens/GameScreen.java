@@ -320,8 +320,8 @@ public class GameScreen implements Screen {
 
             truck.move();
             truck.updateSpray();
-
-            //truck.move();
+            
+            
 
             // manages attacks between trucks and fortresses
             for (Fortress fortress : this.fortresses) {

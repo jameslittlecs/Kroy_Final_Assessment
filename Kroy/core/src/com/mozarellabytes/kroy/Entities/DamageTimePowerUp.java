@@ -1,20 +1,20 @@
 package com.mozarellabytes.kroy.Entities;
 
-public class SpeedTimePowerUp extends TimePowerUp{
+public class DamageTimePowerUp extends TimePowerUp{
 
-	private final float SPEEDCHANGE = 2f;
+	private final float DAMAGECHANGE = 10f;
 	
 	@Override
 	void activatePowerUp() {
 		// TODO Auto-generated method stub
-		getTruck().setSpeed(getTruck().getSpeed() + SPEEDCHANGE);
+		getTruck().setAP(getTruck().getAP() + DAMAGECHANGE);
 		startTime();
 	}
 
 	@Override
 	void deactivatePowerUp() {
 		// TODO Auto-generated method stub
-		getTruck().setSpeed(getTruck().getSpeed() - SPEEDCHANGE);
+		getTruck().setAP(getTruck().getAP() - DAMAGECHANGE);
 	}
 
 }
