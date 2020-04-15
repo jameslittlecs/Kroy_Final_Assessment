@@ -26,6 +26,8 @@ public class LoadScreen implements Screen, InputProcessor {
     private Texture save2Texture;
     private Rectangle save3Button;
     private Texture save3Texture;
+    private Rectangle backButton;
+    private Texture backTexture;
 	
 	 public LoadScreen(final Kroy game, Screen parent, boolean mode) {//true - load, false - save
 		 this.game = game;
@@ -38,9 +40,10 @@ public class LoadScreen implements Screen, InputProcessor {
 		 backgroundImage = new Texture(Gdx.files.internal("menuscreen_blank_2.png"), true);
 		 backgroundImage.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
 		 
-		 this.save1Texture = new Texture(Gdx.files.internal("ui/load_idle.png"), true);
-		 this.save2Texture = new Texture(Gdx.files.internal("ui/load_idle.png"), true);
-		 this.save3Texture = new Texture(Gdx.files.internal("ui/load_idle.png"), true);
+		 this.save1Texture = new Texture(Gdx.files.internal("ui/save1.png"), true);
+		 this.save2Texture = new Texture(Gdx.files.internal("ui/save2.png"), true);
+		 this.save3Texture = new Texture(Gdx.files.internal("ui/save3.png"), true);
+		 this.backTexture = new Texture(Gdx.files.internal("ui/exit.png"), true);
 		 
 		 this.save1Texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
 		 this.save2Texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
@@ -53,6 +56,7 @@ public class LoadScreen implements Screen, InputProcessor {
 		 save2Button = new Rectangle((int) (camera.viewportWidth/2 - ((float) (width/2))), y, width, height);
 		 save3Button = new Rectangle((int) (camera.viewportWidth/2 - ((float) (width/2)) + width * 1.25), y, width, height);
 		 save1Button = new Rectangle((int) (camera.viewportWidth/2 - ((float) (width/2)) - width * 1.25), y, width, height);
+		 backButton = new Rectangle(camera.viewportWidth - 45, camera.viewportHeight - 45, 50, 50);
 		 
 		 Gdx.input.setInputProcessor(this);
 	 }
@@ -89,6 +93,7 @@ public class LoadScreen implements Screen, InputProcessor {
 	     game.batch.draw(save1Texture, save1Button.x, save1Button.y, save1Button.width, save1Button.height);
 	     game.batch.draw(save2Texture, save2Button.x, save2Button.y, save2Button.width, save2Button.height);
 	     game.batch.draw(save3Texture, save3Button.x, save3Button.y, save3Button.width, save3Button.height);
+	     game.batch.draw(backTexture, backButton.x, backButton.y, backButton.width, backButton.height);
 		game.batch.end();
 	}
 
@@ -153,6 +158,9 @@ public class LoadScreen implements Screen, InputProcessor {
 			} else if (save3Button.contains(position.x, position.y)) {
 				game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save3.json"))));
 		        this.dispose();
+			} else if (backButton.contains(position.x, position.y)) {
+				game.setScreen(new MenuScreen(game));
+				this.dispose();
 			}
 		}
 		else {
@@ -168,6 +176,9 @@ public class LoadScreen implements Screen, InputProcessor {
 				SaveManager.saveGame((GameScreen)parent, Gdx.files.local("saves/save3.json"));
 				game.setScreen(new MenuScreen(game));
 		        this.dispose();
+			} else if (backButton.contains(position.x, position.y)) {
+				game.setScreen(parent);
+				this.dispose();
 			}
 		}
 		return true;
