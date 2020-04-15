@@ -656,10 +656,6 @@ public class FireTruck extends Sprite {
 
 	public void setAP(float aP) {
 		AP = aP;
-
-	public void setReserve(float reserve) {
-		this.reserve = reserve;
-
 	}
 }
 
