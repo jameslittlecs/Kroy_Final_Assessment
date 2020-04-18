@@ -77,6 +77,8 @@ public class GameScreen implements Screen {
     private final ArrayList<Fortress> fortresses;
 
     private final ArrayList<Patrol> patrols;
+    
+    private ArrayList<PowerUp> powerUps;
 
     /** Where the FireEngines' spawn, refill and repair */
     private final FireStation station;
@@ -147,6 +149,12 @@ public class GameScreen implements Screen {
         patrols = new ArrayList<Patrol>();
         fortresses = new ArrayList<Fortress>();
         deadEntities = new ArrayList<>(7);
+        
+        //Initializes PowerUps
+        powerUps = new ArrayList<PowerUp>();
+        PowerUp timePowerUp = new SpeedTimePowerUp();
+        powerUps.add(timePowerUp);
+        System.out.println(powerUps);
         
         if (!(gameData == null)) {
         	

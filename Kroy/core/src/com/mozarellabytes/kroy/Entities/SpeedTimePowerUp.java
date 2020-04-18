@@ -4,6 +4,10 @@ public class SpeedTimePowerUp extends TimePowerUp{
 
 	private final float SPEEDCHANGE = 2f;
 	
+	public SpeedTimePowerUp() {
+		
+	}
+	
 	@Override
 	void activatePowerUp() {
 		// TODO Auto-generated method stub
