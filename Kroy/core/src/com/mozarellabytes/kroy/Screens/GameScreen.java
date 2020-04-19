@@ -21,6 +21,7 @@ import Save.GameData;
 import Save.PatrolData;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The Screen that our game is played in.
@@ -77,6 +78,14 @@ public class GameScreen implements Screen {
     private final ArrayList<Fortress> fortresses;
 
     private final ArrayList<Patrol> patrols;
+    
+    private ArrayList<Vector2> roadTiles;
+    
+    private ArrayList<PowerUp> powerUps;
+    
+    private ArrayList<TimePowerUp> timePowerUps;
+    
+    private int spawnedPowerUps, maxPowerUps;
 
     /** Where the FireEngines' spawn, refill and repair */
     private final FireStation station;
@@ -147,6 +156,15 @@ public class GameScreen implements Screen {
         patrols = new ArrayList<Patrol>();
         fortresses = new ArrayList<Fortress>();
         deadEntities = new ArrayList<>(7);
+        
+        roadTiles = getRoadTiles();
+        
+        maxPowerUps = 5;
+        spawnedPowerUps = 0;
+        
+        //Initializes PowerUps
+        powerUps = new ArrayList<PowerUp>();
+        timePowerUps = new ArrayList<TimePowerUp>();
         
         if (!(gameData == null)) {
         	
@@ -489,6 +507,86 @@ public class GameScreen implements Screen {
         SoundFX.sfx_soundtrack.stop();
     }
 
+    private ArrayList<Vector2> getRoadTiles() {
+    	ArrayList<Vector2> roadList = new ArrayList<Vector2>();
+    	for(int x = 0; x<40; x++) {
+    		for(int y = 0; y<25; y++) {
+    			if(isRoad(x,y)) {
+    				Vector2 thisTile = new Vector2(x,y);
+    				roadList.add(thisTile);
+    			}
+    		}
+    	}
+    	return roadList;
+    }
+    
+    /**
+     * Runs through all time power ups to see if any have expired
+     */
+    private void checkTimePowerUps() {
+    	for(int i = 0; i<timePowerUps.size(); i++) {
+    		if(timePowerUps.get(i).isPickedUp() && timePowerUps.get(i).checkTime() == false) {
+    			timePowerUps.get(i).deactivatePowerUp();
+    			timePowerUps.remove(i);
+    		}
+    	}	
+    }
+    
+    private void spawnPowerUp() {
+    	if(spawnedPowerUps < maxPowerUps) {
+    		Random random = new Random();
+    		boolean uniqueTile = false;
+    		Vector2 spawnTile = new Vector2(0,0);
+    		while(!uniqueTile) {
+    			uniqueTile = true;
+    			spawnTile = roadTiles.get(random.nextInt(roadTiles.size()));
+    			for(int i=0; i<powerUps.size();i++) {
+    				if(powerUps.get(i).getPosition().equals(spawnTile)) {
+    					uniqueTile = false;
+    					break;
+    				}
+    			}
+    			if(uniqueTile) {
+    				for(int j=0; j<timePowerUps.size(); j++) {
+    					if(timePowerUps.get(j).getPosition().equals(spawnTile)) {
+    						uniqueTile = false;
+    						break;
+    					}
+    				}
+    			}
+    		}
+    		
+    		int powerUpChoice = random.nextInt(5);
+    		switch(powerUpChoice) {
+    			case 0:
+    				System.out.println("Speed at " + spawnTile);
+    				SpeedTimePowerUp speedPowerUp = new SpeedTimePowerUp(spawnTile);
+    				timePowerUps.add(speedPowerUp);
+    				break;
+    			case 1:
+    				System.out.println("Invincibility at " + spawnTile);
+    				InvincibilityTimePowerUp invPowerUp = new InvincibilityTimePowerUp(spawnTile);
+    				timePowerUps.add(invPowerUp);
+    				break;
+    			case 2:
+    				System.out.println("Damage at " + spawnTile);
+    				DamageTimePowerUp damagePowerUp = new DamageTimePowerUp(spawnTile);
+    				timePowerUps.add(damagePowerUp);
+    				break;
+    			case 3:
+    				System.out.println("Health at " + spawnTile);
+    				HealthPowerUp healthPowerUp = new HealthPowerUp(spawnTile);
+    				powerUps.add(healthPowerUp);
+    				break;
+    			case 4:
+    				System.out.println("Water at " + spawnTile);
+    				RefillWaterPowerUp waterPowerUp = new RefillWaterPowerUp(spawnTile);
+    				powerUps.add(waterPowerUp);
+    				break;
+    		}
+    	}
+    }
+    
     /**
      * Checks whether the player has clicked on a truck and sets that
      * truck to selected truck and entity

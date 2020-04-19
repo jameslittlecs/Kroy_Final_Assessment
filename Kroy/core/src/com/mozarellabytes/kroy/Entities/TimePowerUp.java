@@ -2,22 +2,32 @@ package com.mozarellabytes.kroy.Entities;
 
 import java.util.concurrent.TimeUnit;
 
+import com.badlogic.gdx.math.Vector2;
+
 public abstract class TimePowerUp extends PowerUp{
-	abstract void deactivatePowerUp();
+	public TimePowerUp(Vector2 position) {
+		super(position);
+		// TODO Auto-generated constructor stub
+	}
+
+	public abstract void deactivatePowerUp();
 	
 	private final int POWERUPDURATION = 5;
 	long startTime, currentTime, endTime;
 	
-	
 	public void startTime() {
 		startTime = System.currentTimeMillis();
 		endTime = startTime + TimeUnit.MINUTES.toMillis(POWERUPDURATION);
+		activatePowerUp();
 	}
 	
-	public void checkTime() {
+	public boolean checkTime() {
 		currentTime = System.currentTimeMillis();
 		if(currentTime > endTime) {
-			activatePowerUp();
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	
