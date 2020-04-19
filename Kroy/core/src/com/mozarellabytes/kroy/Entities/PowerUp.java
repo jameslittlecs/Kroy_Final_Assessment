@@ -9,6 +9,10 @@ public abstract class PowerUp {
 	private boolean pickedUp;
 	private Texture texture;
 	
+	public PowerUp(Vector2 position) {
+		this.position = position;
+	}
+	
 	abstract void activatePowerUp();
 	
 	public FireTruck getTruck() {
