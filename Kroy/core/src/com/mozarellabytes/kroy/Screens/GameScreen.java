@@ -81,13 +81,9 @@ public class GameScreen implements Screen {
     
     private ArrayList<Vector2> roadTiles;
     
-    private ArrayList<HealthPowerUp> healthPowerUps;
-    private ArrayList<RefillWaterPowerUp> waterPowerUps;
-    private ArrayList<SpeedTimePowerUp> speedTimePowerUps;
-    private ArrayList<InvincibilityTimePowerUp> invTimePowerUps;
-    private ArrayList<DamageTimePowerUp> damageTimePowerUps;
+    private ArrayList<PowerUp> allPowerUps;
     
-    private int spawnedPowerUps, maxPowerUps;
+    private int maxPowerUps;
 
     /** Where the FireEngines' spawn, refill and repair */
     private final FireStation station;
@@ -162,19 +158,9 @@ public class GameScreen implements Screen {
         roadTiles = getRoadTiles();
         
         maxPowerUps = 5;
-        spawnedPowerUps = 0;
         
         //Initializes PowerUps
-        healthPowerUps = new ArrayList<HealthPowerUp>();
-        waterPowerUps = new ArrayList<RefillWaterPowerUp>();
-        speedTimePowerUps = new ArrayList<SpeedTimePowerUp>();
-        invTimePowerUps = new ArrayList<InvincibilityTimePowerUp>();
-        damageTimePowerUps = new ArrayList<DamageTimePowerUp>();
-        
-        spawnPowerUp();
-        spawnPowerUp();
-        spawnPowerUp();
-        spawnPowerUp();
+        allPowerUps = new ArrayList<PowerUp>();
         
         if (!(gameData == null)) {
         	
@@ -264,10 +250,10 @@ public class GameScreen implements Screen {
             deadFortress.draw(mapBatch);
         }
         
-        for(SpeedTimePowerUp powerUp : speedTimePowerUps) {
-        	System.out.println(powerUp + " " + powerUp.getTexture().getWidth() + " " + powerUp.getPosition());
+        for(PowerUp powerUp : allPowerUps) {
+        	//System.out.println(powerUp + " " + powerUp.getTexture().getWidth() + " " + powerUp.getPosition());
         	if(!powerUp.isPickedUp()) {
-        		powerUp.draw(mapBatch);
+        		powerUp.drawSprite(mapBatch);
         	}
         }
 
@@ -367,6 +353,9 @@ public class GameScreen implements Screen {
         station.restoreTrucks();
         station.checkForCollisions();
 
+        spawnPowerUp();
+        checkTimePowerUps();
+        
         gameState.setTrucksInAttackRange(0);
 
         for (int i = 0; i < station.getTrucks().size(); i++) {
@@ -414,6 +403,8 @@ public class GameScreen implements Screen {
                     this.selectedTruck = null;
                 }
             }
+            
+            checkPowerUpPickUp(truck, allPowerUps);
         }
 
         if (station.getHP() <= 0) {
@@ -540,67 +531,66 @@ public class GameScreen implements Screen {
     /**
      * Runs through all time power ups to see if any have expired
      */
-    private void checkTimePowerUps(ArrayList<TimePowerUp> timePowerUps) {
-    	for(int i = 0; i<timePowerUps.size(); i++) {
-    		if(timePowerUps.get(i).isPickedUp() && timePowerUps.get(i).checkTime() == false) {
-    			timePowerUps.get(i).deactivatePowerUp();
-    			timePowerUps.remove(i);
+    private void checkTimePowerUps() {
+    	for(int i = 0; i<allPowerUps.size(); i++) {
+    		if(allPowerUps.get(i).isPickedUp() && allPowerUps.get(i).checkTime()) {
+    			allPowerUps.get(i).deactivatePowerUp();
+    			allPowerUps.remove(i);
     		}
     	}	
     }
     
+    private void checkPowerUpPickUp(FireTruck truck, ArrayList<PowerUp> powerUps) {
+    	for(PowerUp powerUp : powerUps) {
+    		if(truck.getPosition().equals(powerUp.getPosition()) && !powerUp.isPickedUp()) {
+    			powerUp.activatePowerUp(truck);
+    		}
+    	}
+    }
+    
     private void spawnPowerUp() {
-    	if(spawnedPowerUps < maxPowerUps) {
+    	if(allPowerUps.size() < maxPowerUps) {
     		Random random = new Random();
     		boolean uniqueTile = false;
     		Vector2 spawnTile = new Vector2(0,0);
     		while(!uniqueTile) {
     			uniqueTile = true;
     			spawnTile = roadTiles.get(random.nextInt(roadTiles.size()));
-    			for(int i=0; i<speedTimePowerUps.size();i++) {
-    				if(speedTimePowerUps.get(i).getPosition().equals(spawnTile)) {
+    			for(int i=0; i<allPowerUps.size();i++) {
+    				if(allPowerUps.get(i).getPosition().equals(spawnTile)) {
     					uniqueTile = false;
     					break;
     				}
     			}
-    			/*if(uniqueTile) {
-    				for(int j=0; j<timePowerUps.size(); j++) {
-    					if(timePowerUps.get(j).getPosition().equals(spawnTile)) {
-    						uniqueTile = false;
-    						break;
-    					}
-    				}
-    			}*/
     		}
     		
-    		//int powerUpChoice = random.nextInt(5);
-    		int powerUpChoice = 0;
+    		int powerUpChoice = random.nextInt(5);
     		switch(powerUpChoice) {
     			case 0:
     				System.out.println("Speed at " + spawnTile);
     				SpeedTimePowerUp speedPowerUp = new SpeedTimePowerUp(spawnTile);
-    				speedTimePowerUps.add(speedPowerUp);
+    				allPowerUps.add(speedPowerUp);
     				break;
-    			/*case 1:
+    			case 1:
     				System.out.println("Invincibility at " + spawnTile);
     				InvincibilityTimePowerUp invPowerUp = new InvincibilityTimePowerUp(spawnTile);
-    				timePowerUps.add(invPowerUp);
+    				allPowerUps.add(invPowerUp);
     				break;
     			case 2:
     				System.out.println("Damage at " + spawnTile);
     				DamageTimePowerUp damagePowerUp = new DamageTimePowerUp(spawnTile);
-    				timePowerUps.add(damagePowerUp);
+    				allPowerUps.add(damagePowerUp);
     				break;
     			case 3:
     				System.out.println("Health at " + spawnTile);
     				HealthPowerUp healthPowerUp = new HealthPowerUp(spawnTile);
-    				powerUps.add(healthPowerUp);
+    				allPowerUps.add(healthPowerUp);
     				break;
     			case 4:
     				System.out.println("Water at " + spawnTile);
     				RefillWaterPowerUp waterPowerUp = new RefillWaterPowerUp(spawnTile);
-    				powerUps.add(waterPowerUp);
-    				break;*/
+    				allPowerUps.add(waterPowerUp);
+    				break;
     		}
     	}
     }

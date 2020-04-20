@@ -189,7 +189,7 @@ public class FireTruck extends Sprite {
             if (!dragOffMap) {
                 if (this.path.size > 0) {
                     Vector2 previous = this.path.last();
-                    int interpolation = (int) (40 / type.getSpeed());
+                    int interpolation = (int) (40 / this.getSpeed());
                     for (int i = 1; i < interpolation; i++) {
                         this.path.addLast(new Vector2((((previous.x - coordinate.x) * -1) / interpolation) * i + previous.x, (((previous.y - coordinate.y) * -1) / interpolation) * i + previous.y));
                     }
@@ -201,7 +201,7 @@ public class FireTruck extends Sprite {
 
                     dragOffMap = false;
 
-                    int interpolation = (int) (40 / type.getSpeed());
+                    int interpolation = (int) (40 / this.getSpeed());
                     previous = this.path.last();
 
                     newPath = findPath(coordinate, this.path.last());
@@ -501,7 +501,9 @@ public class FireTruck extends Sprite {
         if (SoundFX.music_enabled) {
             SoundFX.sfx_truck_damage.play();
         }
-        this.HP -= Math.min(HP, this.HP);
+        if(this.isCanTakeDamage()) {
+        	this.HP -= Math.min(HP, this.HP);
+        }
     }
 
     /**
