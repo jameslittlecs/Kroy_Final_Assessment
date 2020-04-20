@@ -81,9 +81,11 @@ public class GameScreen implements Screen {
     
     private ArrayList<Vector2> roadTiles;
     
-    private ArrayList<PowerUp> powerUps;
-    
-    private ArrayList<TimePowerUp> timePowerUps;
+    private ArrayList<HealthPowerUp> healthPowerUps;
+    private ArrayList<RefillWaterPowerUp> waterPowerUps;
+    private ArrayList<SpeedTimePowerUp> speedTimePowerUps;
+    private ArrayList<InvincibilityTimePowerUp> invTimePowerUps;
+    private ArrayList<DamageTimePowerUp> damageTimePowerUps;
     
     private int spawnedPowerUps, maxPowerUps;
 
@@ -163,8 +165,16 @@ public class GameScreen implements Screen {
         spawnedPowerUps = 0;
         
         //Initializes PowerUps
-        powerUps = new ArrayList<PowerUp>();
-        timePowerUps = new ArrayList<TimePowerUp>();
+        healthPowerUps = new ArrayList<HealthPowerUp>();
+        waterPowerUps = new ArrayList<RefillWaterPowerUp>();
+        speedTimePowerUps = new ArrayList<SpeedTimePowerUp>();
+        invTimePowerUps = new ArrayList<InvincibilityTimePowerUp>();
+        damageTimePowerUps = new ArrayList<DamageTimePowerUp>();
+        
+        spawnPowerUp();
+        spawnPowerUp();
+        spawnPowerUp();
+        spawnPowerUp();
         
         if (!(gameData == null)) {
         	
@@ -234,7 +244,7 @@ public class GameScreen implements Screen {
 
         mapRenderer.setView(camera);
         mapRenderer.render(backgroundLayerIndex);
-
+        
         mapBatch.begin();
 
         for (FireTruck truck : station.getTrucks()) {
@@ -252,6 +262,13 @@ public class GameScreen implements Screen {
 
         for (DestroyedEntity deadFortress : deadEntities){
             deadFortress.draw(mapBatch);
+        }
+        
+        for(SpeedTimePowerUp powerUp : speedTimePowerUps) {
+        	System.out.println(powerUp + " " + powerUp.getTexture().getWidth() + " " + powerUp.getPosition());
+        	if(!powerUp.isPickedUp()) {
+        		powerUp.draw(mapBatch);
+        	}
         }
 
         mapBatch.end();
@@ -523,7 +540,7 @@ public class GameScreen implements Screen {
     /**
      * Runs through all time power ups to see if any have expired
      */
-    private void checkTimePowerUps() {
+    private void checkTimePowerUps(ArrayList<TimePowerUp> timePowerUps) {
     	for(int i = 0; i<timePowerUps.size(); i++) {
     		if(timePowerUps.get(i).isPickedUp() && timePowerUps.get(i).checkTime() == false) {
     			timePowerUps.get(i).deactivatePowerUp();
@@ -540,30 +557,31 @@ public class GameScreen implements Screen {
     		while(!uniqueTile) {
     			uniqueTile = true;
     			spawnTile = roadTiles.get(random.nextInt(roadTiles.size()));
-    			for(int i=0; i<powerUps.size();i++) {
-    				if(powerUps.get(i).getPosition().equals(spawnTile)) {
+    			for(int i=0; i<speedTimePowerUps.size();i++) {
+    				if(speedTimePowerUps.get(i).getPosition().equals(spawnTile)) {
     					uniqueTile = false;
     					break;
     				}
     			}
-    			if(uniqueTile) {
+    			/*if(uniqueTile) {
     				for(int j=0; j<timePowerUps.size(); j++) {
     					if(timePowerUps.get(j).getPosition().equals(spawnTile)) {
     						uniqueTile = false;
     						break;
     					}
     				}
-    			}
+    			}*/
     		}
     		
-    		int powerUpChoice = random.nextInt(5);
+    		//int powerUpChoice = random.nextInt(5);
+    		int powerUpChoice = 0;
     		switch(powerUpChoice) {
     			case 0:
     				System.out.println("Speed at " + spawnTile);
     				SpeedTimePowerUp speedPowerUp = new SpeedTimePowerUp(spawnTile);
-    				timePowerUps.add(speedPowerUp);
+    				speedTimePowerUps.add(speedPowerUp);
     				break;
-    			case 1:
+    			/*case 1:
     				System.out.println("Invincibility at " + spawnTile);
     				InvincibilityTimePowerUp invPowerUp = new InvincibilityTimePowerUp(spawnTile);
     				timePowerUps.add(invPowerUp);
@@ -582,7 +600,7 @@ public class GameScreen implements Screen {
     				System.out.println("Water at " + spawnTile);
     				RefillWaterPowerUp waterPowerUp = new RefillWaterPowerUp(spawnTile);
     				powerUps.add(waterPowerUp);
-    				break;
+    				break;*/
     		}
     	}
     }

@@ -1,11 +1,14 @@
 package com.mozarellabytes.kroy.Entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class SpeedTimePowerUp extends TimePowerUp{
-
+	
 	public SpeedTimePowerUp(Vector2 position) {
 		super(position);
+		this.setTexture(new Texture(Gdx.files.internal("powerUps/speed.png")));
 		// TODO Auto-generated constructor stub
 	}
 

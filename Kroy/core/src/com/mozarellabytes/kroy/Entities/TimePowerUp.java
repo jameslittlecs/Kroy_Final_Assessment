@@ -2,6 +2,8 @@ package com.mozarellabytes.kroy.Entities;
 
 import java.util.concurrent.TimeUnit;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class TimePowerUp extends PowerUp{

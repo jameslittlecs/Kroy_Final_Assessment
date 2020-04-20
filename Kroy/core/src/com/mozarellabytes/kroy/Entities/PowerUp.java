@@ -1,9 +1,12 @@
 package com.mozarellabytes.kroy.Entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class PowerUp {
+public abstract class PowerUp extends Sprite{
 	private FireTruck truck;
 	private Vector2 position;
 	private boolean pickedUp;
@@ -14,6 +17,10 @@ public abstract class PowerUp {
 	}
 	
 	abstract void activatePowerUp();
+	
+	public void drawSprite(Batch mapBatch) {
+        mapBatch.draw(this.texture, this.position.x, this.position.y, 1, 1);
+    }
 	
 	public FireTruck getTruck() {
 		return truck;
