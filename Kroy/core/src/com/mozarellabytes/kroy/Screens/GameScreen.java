@@ -182,7 +182,6 @@ public class GameScreen implements Screen {
         		deadEntities.add(destroyedEntityData.createDestroyedEntity());
         	}
         	
-        	
         	this.gameState = gameData.getGameState();
         	this.difficultyControl = gameData.getDifficultyControl();
         }

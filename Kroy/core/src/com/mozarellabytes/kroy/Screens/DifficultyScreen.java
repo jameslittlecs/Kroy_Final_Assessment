@@ -24,6 +24,7 @@ public class DifficultyScreen implements Screen, InputProcessor {
 	public OrthographicCamera camera;
 	private Texture backgroundImage;
 	
+	
     private Rectangle easyButton;
     private Texture easyTexture;
     private Rectangle mediumButton;
@@ -33,10 +34,10 @@ public class DifficultyScreen implements Screen, InputProcessor {
     private Rectangle backButton;
     private Texture backTexture;
 	
-	 public DifficultyScreen(final Kroy game, Screen parent, boolean mode) {//true - load, false - save
+	 public DifficultyScreen(final Kroy game, Screen parent) {//true - load, false - save
 		 this.game = game;
 		 this.parent = parent;
-		 this.mode = mode;
+		
 		 if (parent.getClass().getSimpleName() != null) {
 		 }
 		 camera = new OrthographicCamera();
@@ -161,27 +162,10 @@ public class DifficultyScreen implements Screen, InputProcessor {
 		        this.dispose();
 			} else if (hardButton.contains(position.x, position.y)) {
 				game.setScreen(new GameScreen(game, null));
+				
 		        this.dispose();
 			} else if (backButton.contains(position.x, position.y)) {
 				game.setScreen(new MenuScreen(game));
-				this.dispose();
-			}
-		}
-		else {
-			if (easyButton.contains(position.x, position.y)) {
-				SaveManager.saveGame((GameScreen)parent, Gdx.files.local("saves/save1.json"));
-				game.setScreen(new MenuScreen(game));
-		        this.dispose();
-			} else if (mediumButton.contains(position.x, position.y)) {
-				SaveManager.saveGame((GameScreen)parent, Gdx.files.local("saves/save2.json"));
-				game.setScreen(new MenuScreen(game));
-		        this.dispose();
-			} else if (hardButton.contains(position.x, position.y)) {
-				SaveManager.saveGame((GameScreen)parent, Gdx.files.local("saves/save3.json"));
-				game.setScreen(new MenuScreen(game));
-		        this.dispose();
-			} else if (backButton.contains(position.x, position.y)) {
-				game.setScreen(parent);
 				this.dispose();
 			}
 		}

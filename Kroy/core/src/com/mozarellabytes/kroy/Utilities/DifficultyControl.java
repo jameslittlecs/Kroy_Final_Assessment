@@ -5,20 +5,39 @@ import java.text.DecimalFormat;
 public class DifficultyControl {
     /** The value of the current difficulty level */
     private Integer currentDifficulty;
+    
+    private Integer modeMultiplier;
 
     /** The amount of time, in seconds, for the difficulty to increment by one */
     private float difficultyChangeInterval;
 
     /** The amount of time that has passed since the last increment of difficulty */
     private float currentTime;
+    
+    enum difficultyMode {
+        EASY, MEDIUM, HARD
+    }
 
 
     /** The constructor for DifficultyControl
      */
     public DifficultyControl(){
-        currentDifficulty = 0;
+        difficultyMode difficulty = difficultyMode.EASY;
+    	currentDifficulty = 0;
         difficultyChangeInterval = 60f;
         currentTime = 60;
+        
+        switch (difficulty) {
+        case EASY:
+        	setModeMultiplier(10);
+            break;
+        case MEDIUM:
+        	setModeMultiplier(20);
+        	break;
+        case HARD:
+        	setModeMultiplier(33);
+        	break;
+        }
     }
 
 
@@ -56,6 +75,13 @@ public class DifficultyControl {
      * @return A float equal to one tenth of the current difficulty level
      */
     public float getDifficultyMultiplier(){
-        return (currentDifficulty + 10)/10;
+        return (currentDifficulty + modeMultiplier)/10;
     }
+
+
+	public void setModeMultiplier(Integer modeMultiplier) {
+		this.modeMultiplier = modeMultiplier;
+	}
+    
+    
 }
