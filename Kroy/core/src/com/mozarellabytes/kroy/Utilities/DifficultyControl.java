@@ -22,20 +22,27 @@ public class DifficultyControl {
     /** The constructor for DifficultyControl
      */
     public DifficultyControl(){
-        difficultyMode difficulty = difficultyMode.EASY;
-    	currentDifficulty = 0;
-        difficultyChangeInterval = 60f;
+        difficultyMode difficulty = difficultyMode.MEDIUM;
         currentTime = 60;
         
         switch (difficulty) {
         case EASY:
-        	setModeMultiplier(10);
+        	currentDifficulty = 0;
+        	setModeMultiplier(7);
+        	setDifficultyChangeInterval(90f);
+        	currentTime = 90;
             break;
         case MEDIUM:
-        	setModeMultiplier(20);
+        	currentDifficulty = 1;
+        	setModeMultiplier(14);
+        	setDifficultyChangeInterval(60f);
+        	currentTime = 60;
         	break;
         case HARD:
-        	setModeMultiplier(33);
+        	currentDifficulty = 2;
+        	setModeMultiplier(20);
+        	setDifficultyChangeInterval(45f);
+        	currentTime = 45;
         	break;
         }
     }
@@ -82,6 +89,18 @@ public class DifficultyControl {
 	public void setModeMultiplier(Integer modeMultiplier) {
 		this.modeMultiplier = modeMultiplier;
 	}
+
+
+	public float getDifficultyChangeInterval() {
+		return difficultyChangeInterval;
+	}
+
+
+	public void setDifficultyChangeInterval(float difficultyChangeInterval) {
+		this.difficultyChangeInterval = difficultyChangeInterval;
+	}
+	
+	
     
     
 }
