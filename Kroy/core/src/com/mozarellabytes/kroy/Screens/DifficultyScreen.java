@@ -153,22 +153,21 @@ public class DifficultyScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
 		Vector3 position = this.camera.unproject(new Vector3(arg0, arg1, 0));
-		if (this.mode == true) {
-			if (easyButton.contains(position.x, position.y)) {
-		        game.setScreen(new GameScreen(game, null));
-		        this.dispose();
-			} else if (mediumButton.contains(position.x, position.y)) {
+		
+		if (easyButton.contains(position.x, position.y)) {
+		    game.setScreen(new GameScreen(game, null));
+		    this.dispose();
+		} else if (mediumButton.contains(position.x, position.y)) {
 				game.setScreen(new GameScreen(game, null));
 		        this.dispose();
-			} else if (hardButton.contains(position.x, position.y)) {
+		} else if (hardButton.contains(position.x, position.y)) {
 				game.setScreen(new GameScreen(game, null));
-				
 		        this.dispose();
-			} else if (backButton.contains(position.x, position.y)) {
+		} else if (backButton.contains(position.x, position.y)) {
 				game.setScreen(new MenuScreen(game));
 				this.dispose();
-			}
 		}
+		
 		return true;
 	}
 
