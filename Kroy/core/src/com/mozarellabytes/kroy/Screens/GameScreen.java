@@ -115,7 +115,8 @@ public class GameScreen implements Screen {
      *
      * @param game LibGdx game
      */
-    public GameScreen(Kroy game, GameData gameData) {
+    public GameScreen(Kroy game, GameData gameData, String difficulty) {
+    	
     	
         this.game = game;
         fpsCounter = new FPSLogger();
@@ -140,6 +141,17 @@ public class GameScreen implements Screen {
 
         gameState = new GameState();
         camShake = new CameraShake();
+        
+        if (difficulty == "MEDIUM") {
+        	difficultyControl.setDifficultyMedium();
+        	System.out.println(difficultyControl.getDifficulty());
+        } else if (difficulty == "HARD"){
+        	difficultyControl.setDifficultyHard();
+        	System.out.println(difficultyControl.getDifficulty());
+        } else if (difficulty == "EASY") {
+        	difficultyControl.setDifficultyEasy();
+        	System.out.println(difficultyControl.getDifficulty());
+        }
 
         //Orders renderer to start rendering the background, then the player layer, then structures
         mapLayers = map.getLayers();
@@ -161,6 +173,7 @@ public class GameScreen implements Screen {
         
         //Initializes PowerUps
         allPowerUps = new ArrayList<PowerUp>();
+        
         
         if (!(gameData == null)) {
         	
@@ -214,6 +227,8 @@ public class GameScreen implements Screen {
             SoundFX.sfx_soundtrack.setVolume(.5f);
             SoundFX.sfx_soundtrack.play();
         }
+        
+        
     }
 
     @Override
@@ -332,11 +347,7 @@ public class GameScreen implements Screen {
 
         }
         gui.renderButtons();
-
-
-
         gui.renderDifficultyCounter(difficultyControl);
-
     }
 
     /**

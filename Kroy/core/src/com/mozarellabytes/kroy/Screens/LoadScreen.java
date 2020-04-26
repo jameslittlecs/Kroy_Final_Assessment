@@ -150,13 +150,13 @@ public class LoadScreen implements Screen, InputProcessor {
 		Vector3 position = this.camera.unproject(new Vector3(arg0, arg1, 0));
 		if (this.mode == true) {
 			if (save1Button.contains(position.x, position.y)) {
-		        game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save1.json"))));
+		        game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save1.json")),null));
 		        this.dispose();
 			} else if (save2Button.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save2.json"))));
+				game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save2.json")),null));
 		        this.dispose();
 			} else if (save3Button.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save3.json"))));
+				game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save3.json")),null));
 		        this.dispose();
 			} else if (backButton.contains(position.x, position.y)) {
 				game.setScreen(new MenuScreen(game));
