@@ -15,24 +15,21 @@ public class DifficultyControl {
     /** The amount of time that has passed since the last increment of difficulty */
     private float currentTime;
     
-    enum difficultyMode {
+    public enum difficultyMode {
         EASY, MEDIUM, HARD
     }
 
-
     /** The constructor for DifficultyControl
 	 */
-	public DifficultyControl(){
-		difficulty = difficultyMode.MEDIUM;
+	public DifficultyControl(difficultyMode difficulty){
 		currentTime = 60;
 	    currentDifficulty = 1;
-	    
 	    
 	    switch (difficulty) {
 	    case EASY:	    	
 	    	setModeMultiplier(10);
 	    	setDifficultyChangeInterval(90f);
-	    	currentTime = 90;
+	    	currentTime =  90;
 	        break;
 	    case MEDIUM:	    	
 	    	setModeMultiplier(50);
@@ -43,13 +40,10 @@ public class DifficultyControl {
 	    	setModeMultiplier(70);
 	    	setDifficultyChangeInterval(45f);
 	    	currentTime = 45;
-	    	break;
-	    	
+	    	break;	
 	    }
 		System.out.println(difficulty);
-
 	}
-
 
     /** Updates the amount of time to a change in difficulty
      *

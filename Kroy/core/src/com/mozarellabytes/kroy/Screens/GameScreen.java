@@ -13,6 +13,7 @@ import com.mozarellabytes.kroy.Entities.*;
 import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.*;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.difficultyMode;
 
 import Save.DestroyedEntityData;
 import Save.EngineData;
@@ -117,11 +118,8 @@ public class GameScreen implements Screen {
      */
     public GameScreen(Kroy game, GameData gameData, String difficulty) {
     	
-    	
         this.game = game;
         fpsCounter = new FPSLogger();
-
-        difficultyControl = new DifficultyControl();
 
         state = PlayState.PLAY;
 
@@ -143,14 +141,14 @@ public class GameScreen implements Screen {
         camShake = new CameraShake();
         
         if (difficulty == "MEDIUM") {
-        	difficultyControl.setDifficultyMedium();
-        	System.out.println(difficultyControl.getDifficulty());
+        	difficultyMode Medium = difficultyMode.MEDIUM;
+        	difficultyControl = new DifficultyControl(Medium);
         } else if (difficulty == "HARD"){
-        	difficultyControl.setDifficultyHard();
-        	System.out.println(difficultyControl.getDifficulty());
+        	difficultyMode Hard = difficultyMode.HARD;
+        	difficultyControl = new DifficultyControl(Hard);
         } else if (difficulty == "EASY") {
-        	difficultyControl.setDifficultyEasy();
-        	System.out.println(difficultyControl.getDifficulty());
+        	difficultyMode Easy = difficultyMode.EASY;
+        	difficultyControl = new DifficultyControl(Easy);
         }
 
         //Orders renderer to start rendering the background, then the player layer, then structures
