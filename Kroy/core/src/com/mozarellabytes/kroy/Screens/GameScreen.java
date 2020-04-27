@@ -97,7 +97,7 @@ public class GameScreen implements Screen {
     public Object selectedEntity;
 
     /** A class keeping track of the current difficulty and the time to the next change */
-    private DifficultyControl difficultyControl;
+    private static DifficultyControl difficultyControl;
 
     /** An arraylist of all the entities that have been destroyed */
     private ArrayList<DestroyedEntity> deadEntities;
@@ -731,7 +731,7 @@ public class GameScreen implements Screen {
         return this.state;
     }
 
-	public DifficultyControl getDifficultyControl() {
+	public static DifficultyControl getDifficultyControl() {
 		return difficultyControl;
 	}
 

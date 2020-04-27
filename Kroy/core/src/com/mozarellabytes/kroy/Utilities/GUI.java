@@ -249,7 +249,7 @@ public class GUI {
         game.font19.draw(game.batch, "Range: ", this.selectedX + 15, this.selectedY + this.selectedH - 50 - newLine*2);
         game.font19.draw(game.batch, String.format("%.1f", fortress.getFortressType().getRange()), this.selectedX + 20, this.selectedY + this.selectedH - 50 - newLine*3);
         game.font19.draw(game.batch, "AP: ", this.selectedX + 15, this.selectedY + this.selectedH - 50 - newLine*4);
-        game.font19.draw(game.batch, String.format("%.2f", fortress.getFortressType().getAP()), this.selectedX + 20, this.selectedY + this.selectedH - 50 - newLine*5);
+        game.font19.draw(game.batch, String.format("%.2f", (fortress.getFortressType().getAP()* GameScreen.getDifficultyControl().getDifficultyMultiplier())), this.selectedX + 20, this.selectedY + this.selectedH - 50 - newLine*5);
         game.batch.end();
     }
 
