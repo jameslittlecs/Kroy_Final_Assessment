@@ -9,9 +9,12 @@ import com.badlogic.gdx.utils.Queue;
 import com.mozarellabytes.kroy.Screens.GameScreen;
 import com.mozarellabytes.kroy.Utilities.SoundFX;
 
+import powerUps.PowerUp;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -104,6 +107,11 @@ public class FireTruck extends Sprite {
     //NOT IMPLEMENTED. CHECK IF TRUE WHEN TAKING DAMAGE. WILL BE TURNED FALSE
     //FOR INVINCIBILITY POWER UP
     private boolean canTakeDamage;
+    
+    private ArrayList<PowerUp> powerUps;
+    
+    
+    
     /**
      * Constructs a new FireTruck at a position and of a certain type
      * which have been passed in
@@ -129,6 +137,7 @@ public class FireTruck extends Sprite {
         this.setSpeed(type.getSpeed());
         this.setCanTakeDamage(true);
         this.setAP(type.getAP());
+        this.powerUps = new ArrayList<PowerUp>();
     }
 
     /**
@@ -156,6 +165,17 @@ public class FireTruck extends Sprite {
             if (this.path.isEmpty() && inCollision) {
                 inCollision = false;
             }
+        }
+        
+        for (PowerUp powerUp : this.powerUps) {
+        	powerUp.checkTime();
+        }
+        Iterator<PowerUp> iter = powerUps.iterator();
+        while (iter.hasNext()) {
+            PowerUp powerUp = iter.next();
+
+            if (powerUp.expired)
+                iter.remove();
         }
     }
 
@@ -189,7 +209,7 @@ public class FireTruck extends Sprite {
             if (!dragOffMap) {
                 if (this.path.size > 0) {
                     Vector2 previous = this.path.last();
-                    int interpolation = (int) (40 / this.getSpeed());
+                    int interpolation = (int) (40 / Math.ceil(this.getSpeed()));
                     for (int i = 1; i < interpolation; i++) {
                         this.path.addLast(new Vector2((((previous.x - coordinate.x) * -1) / interpolation) * i + previous.x, (((previous.y - coordinate.y) * -1) / interpolation) * i + previous.y));
                     }
@@ -201,7 +221,7 @@ public class FireTruck extends Sprite {
 
                     dragOffMap = false;
 
-                    int interpolation = (int) (40 / this.getSpeed());
+                    int interpolation = (int) (40 / Math.ceil(this.getSpeed()));
                     previous = this.path.last();
 
                     newPath = findPath(coordinate, this.path.last());
@@ -487,7 +507,7 @@ public class FireTruck extends Sprite {
      * @param particle  the particle which damages the fortress
      */
     private void damage(WaterParticle particle) {
-        particle.getTarget().damage(Math.min(this.type.getAP(), particle.getTarget().getHP()));
+        particle.getTarget().damage(Math.min(this.getAP(), particle.getTarget().getHP()));
     }
 
     /**
@@ -658,6 +678,14 @@ public class FireTruck extends Sprite {
 
 	public void setAP(float aP) {
 		AP = aP;
+	}
+
+	public ArrayList<PowerUp> getPowerUps() {
+		return powerUps;
+	}
+
+	public void setPowerUps(ArrayList<PowerUp> powerUps) {
+		this.powerUps = powerUps;
 	}
 }
 

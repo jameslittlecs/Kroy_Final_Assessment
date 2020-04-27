@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mozarellabytes.kroy.Kroy;
 
-import Save.SaveManager;
+import save.SaveManager;
 
 public class LoadScreen implements Screen, InputProcessor {
 	

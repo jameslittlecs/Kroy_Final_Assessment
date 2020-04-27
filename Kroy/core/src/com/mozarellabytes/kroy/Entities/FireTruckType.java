@@ -63,7 +63,7 @@ public enum FireTruckType {
 
     /**
      * Constructs the FireTruckType
-     *  @param maxReserve The maximum reserve for this type of truck;
+     * @param maxReserve The maximum reserve for this type of truck;
      * @param speed The speed of this type of truck
      * @param trailColour The colour of the truck's path when it has been drawn
      * @param name The name for this type of truck

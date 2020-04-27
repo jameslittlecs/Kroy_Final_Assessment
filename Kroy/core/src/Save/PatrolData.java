@@ -1,4 +1,4 @@
-package Save;
+package save;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mozarellabytes.kroy.Entities.Patrol;
@@ -18,7 +18,7 @@ public class PatrolData {
 	public void setType(PatrolType type) {
 		this.type = type;
 	}
-	public Patrol createPatrol() {
+	public Patrol create() {
 		Patrol patrol = new Patrol(this.type, this.position);
 		patrol.setHP(this.HP);
 		return patrol;

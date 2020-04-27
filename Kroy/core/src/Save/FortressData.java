@@ -1,4 +1,4 @@
-package Save;
+package save;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mozarellabytes.kroy.Entities.Fortress;
@@ -18,7 +18,7 @@ public class FortressData {
 	public void setType(FortressType type) {
 		this.type = type;
 	}
-	public Fortress createFortress() {
+	public Fortress create() {
 		Fortress fortress = new Fortress(position.x, position.y, this.type);
 		fortress.setHP(this.HP);
 		return fortress;

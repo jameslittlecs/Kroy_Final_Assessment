@@ -1,4 +1,4 @@
-package Save;
+package save;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,7 +14,7 @@ public class DestroyedEntityData {
 	public void setArea(Rectangle area) {
 		this.area = area;
 	}
-	public DestroyedEntity createDestroyedEntity() {
+	public DestroyedEntity create() {
 		return new DestroyedEntity(new Texture(this.deadTexture), this.area);
 	}
 }

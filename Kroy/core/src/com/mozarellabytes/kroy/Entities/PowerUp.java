@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class PowerUp extends Sprite{
+public abstract class PoweUp extends Sprite{
 	private FireTruck truck;
 	private Vector2 position;
 	private boolean pickedUp;
