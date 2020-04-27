@@ -22,7 +22,6 @@ public class DifficultyControl {
     /** The constructor for DifficultyControl
 	 */
 	public DifficultyControl(difficultyMode difficulty){
-		currentTime = 60;
 	    currentDifficulty = 1;
 	    
 	    switch (difficulty) {
@@ -32,12 +31,12 @@ public class DifficultyControl {
 	    	currentTime =  90;
 	        break;
 	    case MEDIUM:	    	
-	    	setModeMultiplier(50);
+	    	setModeMultiplier(20);
 	    	setDifficultyChangeInterval(60f);
 	    	currentTime = 60;
 	    	break;
 	    case HARD:
-	    	setModeMultiplier(70);
+	    	setModeMultiplier(30);
 	    	setDifficultyChangeInterval(45f);
 	    	currentTime = 45;
 	    	break;	
