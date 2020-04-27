@@ -51,12 +51,14 @@ public class SoundFX {
     /** Plays game music */
     public static void playGameMusic() {
         sfx_soundtrack.play();
+        sfx_soundtrack.setVolume(0.5f);
         music_enabled = true;
     }
 
     /** Plays menu music */
     public static void playMenuMusic() {
         sfx_menu.play();
+        sfx_menu.setVolume(0.5f);
         music_enabled = true;
     }
 
