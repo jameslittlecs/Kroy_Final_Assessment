@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mozarellabytes.kroy.Kroy;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 import com.mozarellabytes.kroy.Utilities.MenuInputHandler;
 import com.mozarellabytes.kroy.Utilities.SoundFX;
 
@@ -155,13 +156,13 @@ public class DifficultyScreen implements Screen, InputProcessor {
 		Vector3 position = this.camera.unproject(new Vector3(arg0, arg1, 0));
 		
 		if (easyButton.contains(position.x, position.y)) {
-		    game.setScreen(new GameScreen(game, null, "EASY"));
+		    game.setScreen(new GameScreen(game, null, DifficultyMode.EASY));
 		    this.dispose();
 		} else if (mediumButton.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, null, "MEDIUM"));
+				game.setScreen(new GameScreen(game, null, DifficultyMode.MEDIUM));
 		        this.dispose();
 		} else if (hardButton.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, null, "HARD"));
+				game.setScreen(new GameScreen(game, null, DifficultyMode.HARD));
 		        this.dispose();
 		} else if (backButton.contains(position.x, position.y)) {
 				game.setScreen(new MenuScreen(game));

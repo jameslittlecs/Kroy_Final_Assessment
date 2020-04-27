@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Entities.DestroyedEntity;
 import com.mozarellabytes.kroy.Utilities.DifficultyControl;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 import powerUps.PowerUpTile;
 

@@ -13,7 +13,7 @@ import com.mozarellabytes.kroy.Entities.*;
 import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.*;
-import com.mozarellabytes.kroy.Utilities.DifficultyControl.difficultyMode;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 import powerUps.Power;
 import powerUps.PowerUp;
@@ -100,7 +100,7 @@ public class GameScreen implements Screen {
     public Object selectedEntity;
 
     /** A class keeping track of the current difficulty and the time to the next change */
-    private static DifficultyControl difficultyControl;
+    public DifficultyControl difficultyControl;
 
     /** An arraylist of all the entities that have been destroyed */
     private ArrayList<DestroyedEntity> deadEntities;
@@ -121,7 +121,7 @@ public class GameScreen implements Screen {
      *
      * @param game LibGdx game
      */
-    public GameScreen(Kroy game, GameData gameData, String difficulty) {
+    public GameScreen(Kroy game, GameData gameData, DifficultyMode difficulty) {
     	
         this.game = game;
         fpsCounter = new FPSLogger();
@@ -145,16 +145,6 @@ public class GameScreen implements Screen {
         gameState = new GameState();
         camShake = new CameraShake();
         
-        if (difficulty == "MEDIUM") {
-        	difficultyMode Medium = difficultyMode.MEDIUM;
-        	difficultyControl = new DifficultyControl(Medium);
-        } else if (difficulty == "HARD"){
-        	difficultyMode Hard = difficultyMode.HARD;
-        	difficultyControl = new DifficultyControl(Hard);
-        } else if (difficulty == "EASY") {
-        	difficultyMode Easy = difficultyMode.EASY;
-        	difficultyControl = new DifficultyControl(Easy);
-        }
 
         //Orders renderer to start rendering the background, then the player layer, then structures
         mapLayers = map.getLayers();
@@ -173,6 +163,7 @@ public class GameScreen implements Screen {
         
         this.maxPowerUpTiles = 3;
         
+        this.difficultyControl = new DifficultyControl();
         
         if (!(gameData == null)) {
         	
@@ -197,6 +188,9 @@ public class GameScreen implements Screen {
         	this.difficultyControl = gameData.getDifficultyControl();
         }
         else {
+        	
+        	this.difficultyControl.setDifficulty(difficulty);
+        	
             spawn(FireTruckType.Emerald);
             spawn(FireTruckType.Amethyst);
             spawn(FireTruckType.Sapphire);
@@ -667,7 +661,7 @@ public class GameScreen implements Screen {
         return this.state;
     }
 
-	public static DifficultyControl getDifficultyControl() {
+	public DifficultyControl getDifficultyControl() {
 		return difficultyControl;
 	}
 

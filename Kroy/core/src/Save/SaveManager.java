@@ -13,7 +13,7 @@ import com.mozarellabytes.kroy.Entities.FireTruck;
 import com.mozarellabytes.kroy.Entities.Fortress;
 import com.mozarellabytes.kroy.Entities.Patrol;
 import com.mozarellabytes.kroy.Screens.GameScreen;
-import com.mozarellabytes.kroy.Utilities.DifficultyControl.difficultyMode;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 import powerUps.PowerUp;
 import powerUps.PowerUpTile;
@@ -34,7 +34,7 @@ public class SaveManager {
 		
 		GameData gameData = new GameData();
 		
-		gameData.setDifficultyControl(gameScreen.getDifficultyControl());
+		gameData.setDifficultyControl(gameScreen.difficultyControl);
 		gameData.setGameState(gameScreen.gameState);
 		gameData.setDestroyedEntities(getDestroyedEntityData(gameScreen));
 		gameData.setEngines(getEngineData(gameScreen));
