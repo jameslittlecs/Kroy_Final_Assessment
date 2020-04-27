@@ -326,13 +326,11 @@ public class GUI {
      * and unpauses the game */
     public void clickedPauseButton() {
 
-        if (gameScreen.getState().equals(GameScreen.PlayState.PLAY)) {
-            currentPauseTexture = pauseButtonClicked;
+        if (gameScreen.getState().equals(GameScreen.PlayState.PLAY)) {    
             if (SoundFX.music_enabled) {
                 SoundFX.sfx_pause.play();
             }
         } else {
-            currentPauseTexture = pauseButtonIdle;
             if (SoundFX.music_enabled) {
                 SoundFX.sfx_unpause.play();
             }
