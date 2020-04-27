@@ -6,6 +6,7 @@ public class DifficultyControl {
     /** The value of the current difficulty level */
     private Integer currentDifficulty;
     
+    private difficultyMode difficulty;               
     private Integer modeMultiplier;
 
     /** The amount of time, in seconds, for the difficulty to increment by one */
@@ -14,39 +15,34 @@ public class DifficultyControl {
     /** The amount of time that has passed since the last increment of difficulty */
     private float currentTime;
     
-    enum difficultyMode {
+    public enum difficultyMode {
         EASY, MEDIUM, HARD
     }
 
-
     /** The constructor for DifficultyControl
-     */
-    public DifficultyControl(){
-        difficultyMode difficulty = difficultyMode.MEDIUM;
-        currentTime = 60;
-        
-        switch (difficulty) {
-        case EASY:
-        	currentDifficulty = 0;
-        	setModeMultiplier(7);
-        	setDifficultyChangeInterval(90f);
-        	currentTime = 90;
-            break;
-        case MEDIUM:
-        	currentDifficulty = 1;
-        	setModeMultiplier(14);
-        	setDifficultyChangeInterval(60f);
-        	currentTime = 60;
-        	break;
-        case HARD:
-        	currentDifficulty = 2;
-        	setModeMultiplier(20);
-        	setDifficultyChangeInterval(45f);
-        	currentTime = 45;
-        	break;
-        }
-    }
-
+	 */
+	public DifficultyControl(difficultyMode difficulty){
+	    currentDifficulty = 1;
+	    
+	    switch (difficulty) {
+	    case EASY:	    	
+	    	setModeMultiplier(10);
+	    	setDifficultyChangeInterval(90f);
+	    	currentTime =  90;
+	        break;
+	    case MEDIUM:	    	
+	    	setModeMultiplier(20);
+	    	setDifficultyChangeInterval(60f);
+	    	currentTime = 60;
+	    	break;
+	    case HARD:
+	    	setModeMultiplier(30);
+	    	setDifficultyChangeInterval(45f);
+	    	currentTime = 45;
+	    	break;	
+	    }
+		System.out.println(difficulty);
+	}
 
     /** Updates the amount of time to a change in difficulty
      *
@@ -100,7 +96,44 @@ public class DifficultyControl {
 		this.difficultyChangeInterval = difficultyChangeInterval;
 	}
 	
+	public void setDifficultyMedium() {
+		difficulty = difficultyMode.MEDIUM;
+	}
 	
-    
-    
+	public void setDifficultyHard() {
+		difficulty = difficultyMode.HARD;
+		System.out.println(currentTime);
+	}
+	
+	public void setDifficultyEasy() {
+		difficulty = difficultyMode.EASY;
+		System.out.println(currentTime);
+	}
+
+
+	public difficultyMode getDifficulty() {
+		return difficulty;
+	}
+
+
+	public void setDifficulty(difficultyMode difficulty) {
+		this.difficulty = difficulty;
+	}
+
+
+	public Integer getCurrentDifficulty() {
+		return currentDifficulty;
+	}
+
+
+	public Integer getModeMultiplier() {
+		return modeMultiplier;
+	}
+
+
+	public float getCurrentTime() {
+		return currentTime;
+	}
+	
+	
 }

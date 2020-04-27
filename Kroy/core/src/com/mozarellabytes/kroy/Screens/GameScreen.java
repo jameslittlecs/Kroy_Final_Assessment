@@ -13,6 +13,7 @@ import com.mozarellabytes.kroy.Entities.*;
 import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.*;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.difficultyMode;
 
 import powerUps.Power;
 import powerUps.PowerUp;
@@ -99,7 +100,7 @@ public class GameScreen implements Screen {
     public Object selectedEntity;
 
     /** A class keeping track of the current difficulty and the time to the next change */
-    private DifficultyControl difficultyControl;
+    private static DifficultyControl difficultyControl;
 
     /** An arraylist of all the entities that have been destroyed */
     private ArrayList<DestroyedEntity> deadEntities;
@@ -120,12 +121,10 @@ public class GameScreen implements Screen {
      *
      * @param game LibGdx game
      */
-    public GameScreen(Kroy game, GameData gameData) {
+    public GameScreen(Kroy game, GameData gameData, String difficulty) {
     	
         this.game = game;
         fpsCounter = new FPSLogger();
-
-        difficultyControl = new DifficultyControl();
 
         state = PlayState.PLAY;
 
@@ -145,6 +144,17 @@ public class GameScreen implements Screen {
 
         gameState = new GameState();
         camShake = new CameraShake();
+        
+        if (difficulty == "MEDIUM") {
+        	difficultyMode Medium = difficultyMode.MEDIUM;
+        	difficultyControl = new DifficultyControl(Medium);
+        } else if (difficulty == "HARD"){
+        	difficultyMode Hard = difficultyMode.HARD;
+        	difficultyControl = new DifficultyControl(Hard);
+        } else if (difficulty == "EASY") {
+        	difficultyMode Easy = difficultyMode.EASY;
+        	difficultyControl = new DifficultyControl(Easy);
+        }
 
         //Orders renderer to start rendering the background, then the player layer, then structures
         mapLayers = map.getLayers();
@@ -162,6 +172,7 @@ public class GameScreen implements Screen {
         this.powerUpTiles = new ArrayList<PowerUpTile>();
         
         this.maxPowerUpTiles = 3;
+        
         
         if (!(gameData == null)) {
         	
@@ -222,6 +233,8 @@ public class GameScreen implements Screen {
             SoundFX.sfx_soundtrack.setVolume(.5f);
             SoundFX.sfx_soundtrack.play();
         }
+        
+        
     }
 
     @Override
@@ -338,11 +351,7 @@ public class GameScreen implements Screen {
 
         }
         gui.renderButtons();
-
-
-
         gui.renderDifficultyCounter(difficultyControl);
-
     }
 
     /**
@@ -658,7 +667,7 @@ public class GameScreen implements Screen {
         return this.state;
     }
 
-	public DifficultyControl getDifficultyControl() {
+	public static DifficultyControl getDifficultyControl() {
 		return difficultyControl;
 	}
 

@@ -155,13 +155,13 @@ public class DifficultyScreen implements Screen, InputProcessor {
 		Vector3 position = this.camera.unproject(new Vector3(arg0, arg1, 0));
 		
 		if (easyButton.contains(position.x, position.y)) {
-		    game.setScreen(new GameScreen(game, null));
+		    game.setScreen(new GameScreen(game, null, "EASY"));
 		    this.dispose();
 		} else if (mediumButton.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, null));
+				game.setScreen(new GameScreen(game, null, "MEDIUM"));
 		        this.dispose();
 		} else if (hardButton.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, null));
+				game.setScreen(new GameScreen(game, null, "HARD"));
 		        this.dispose();
 		} else if (backButton.contains(position.x, position.y)) {
 				game.setScreen(new MenuScreen(game));
