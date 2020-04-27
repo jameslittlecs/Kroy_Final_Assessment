@@ -1,4 +1,4 @@
-package save;
+package Save;
 
 import com.badlogic.gdx.math.Vector2;
 
