@@ -210,7 +210,7 @@ public class GameScreen implements Screen {
             fortresses.add(new Fortress(41.95f, 23.5f, FortressType.Museum));
             fortresses.add(new Fortress(44f, 11f, FortressType.CentralHall));
             
-            this.powerUpTiles.add(new PowerUpTile(new Vector2(2,6), Power.INV));
+//            this.powerUpTiles.add(new PowerUpTile(new Vector2(2,6), Power.INV));
             spawnPowerUpTile();
             spawnPowerUpTile();
             spawnPowerUpTile();
@@ -272,7 +272,7 @@ public class GameScreen implements Screen {
         mapBatch.begin();
         for (Patrol patrol : this.patrols) {
             if(patrol.getType().equals(PatrolType.Station)){
-                if(gameState.firstFortressDestroyed()){
+                if(gameState.thirdFortressDestroyed()){
                     patrol.drawSprite(mapBatch);
                 }
             }
@@ -294,7 +294,7 @@ public class GameScreen implements Screen {
 
         for (Patrol patrol : this.patrols) {
             if(patrol.getType().equals(PatrolType.Station)){
-                if(gameState.firstFortressDestroyed()){
+                if(gameState.thirdFortressDestroyed()){
                     patrol.drawStats(shapeMapRenderer);
                 }
             }
@@ -355,7 +355,7 @@ public class GameScreen implements Screen {
      */
     private void update(float delta) {
         gameState.hasGameEnded(game);
-        gameState.firstFortressDestroyed();
+        gameState.thirdFortressDestroyed();
         camShake.update(delta, camera, new Vector2(camera.viewportWidth / 2f, camera.viewportHeight / 2f));
 
         station.restoreTrucks();
@@ -440,7 +440,7 @@ public class GameScreen implements Screen {
             patrol.updateSpray();
 
             if(patrol.getType().equals(PatrolType.Station)){
-                if((gameState.firstFortressDestroyed())){
+                if((gameState.thirdFortressDestroyed())){
                     if((patrol.getPosition().equals(PatrolType.Station.getPoint4()))){
                         patrol.attack(station);
                     }

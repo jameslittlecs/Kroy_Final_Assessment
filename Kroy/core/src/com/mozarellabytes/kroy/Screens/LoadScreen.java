@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mozarellabytes.kroy.Kroy;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 import Save.SaveManager;
 
@@ -160,21 +162,32 @@ public class LoadScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
 		Vector3 position = this.camera.unproject(new Vector3(arg0, arg1, 0));
+		FileHandle fileHandle = null;
 		if (this.mode == true) {
 			if (save1Button.contains(position.x, position.y)) {
-		        game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save1.json")),null));
+		        fileHandle = Gdx.files.local("saves/save1.json");
 		        this.dispose();
 			} else if (save2Button.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save2.json")),null));
+				fileHandle =Gdx.files.local("saves/save2.json");
 		        this.dispose();
 			} else if (save3Button.contains(position.x, position.y)) {
-				game.setScreen(new GameScreen(game, SaveManager.loadGame(Gdx.files.local("saves/save3.json")),null));
+				fileHandle =Gdx.files.local("saves/save3.json");
 		        this.dispose();
 			} else if (backButton.contains(position.x, position.y)) {
 				game.setScreen(new MenuScreen(game));
 				this.dispose();
+				return true;
 			}
-			
+			if (!(fileHandle == null) && (fileHandle.exists())) {
+				game.setScreen(new GameScreen(game, SaveManager.loadGame(fileHandle), DifficultyMode.EASY));
+				this.dispose();
+				return true;
+			}
+			else {
+				this.game.setScreen(new LoadScreen(this.game, this.parent, this.mode));
+				this.dispose();
+				return true;
+			}		
 		}
 		else {
 			if (save1Button.contains(position.x, position.y)) {
@@ -195,7 +208,7 @@ public class LoadScreen implements Screen, InputProcessor {
 			}
 			
 		}
-		return true;
+		return false;
 	}
 
 	@Override

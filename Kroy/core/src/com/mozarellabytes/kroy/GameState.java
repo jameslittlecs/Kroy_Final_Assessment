@@ -81,8 +81,8 @@ public class GameState {
         }
     }
 
-    public boolean firstFortressDestroyed() {
-        if ((fortressesDestroyed >= 1)&&(stationDestoyed==false)) {
+    public boolean thirdFortressDestroyed() {
+        if ((fortressesDestroyed >= 3)&&(stationDestoyed==false)) {
             return true;
         } else{
             return false;
