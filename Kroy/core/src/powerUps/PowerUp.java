@@ -7,7 +7,7 @@ public abstract class PowerUp {
 	private long start;
 	protected Power power;
 	protected FireTruck truck;
-	private final static long DEFAULT_DURATION = 10000;
+	private final static long DEFAULT_DURATION = 600000;
 	public boolean expired = false;
 	
 	public PowerUp(FireTruck truck) {
