@@ -13,15 +13,20 @@ import com.mozarellabytes.kroy.Entities.*;
 import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.*;
-import com.mozarellabytes.kroy.Utilities.DifficultyControl.difficultyMode;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
+import powerUps.Power;
+import powerUps.PowerUp;
+import powerUps.PowerUpTile;
 import Save.DestroyedEntityData;
 import Save.EngineData;
 import Save.FortressData;
 import Save.GameData;
 import Save.PatrolData;
+import Save.PowerUpTileData;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -80,11 +85,9 @@ public class GameScreen implements Screen {
 
     private final ArrayList<Patrol> patrols;
     
-    private ArrayList<Vector2> roadTiles;
+    private ArrayList<PowerUpTile> powerUpTiles;
     
-    private ArrayList<PowerUp> allPowerUps;
-    
-    private int maxPowerUps;
+    private int maxPowerUpTiles;
 
     /** Where the FireEngines' spawn, refill and repair */
     private final FireStation station;
@@ -97,7 +100,7 @@ public class GameScreen implements Screen {
     public Object selectedEntity;
 
     /** A class keeping track of the current difficulty and the time to the next change */
-    private static DifficultyControl difficultyControl;
+    public DifficultyControl difficultyControl;
 
     /** An arraylist of all the entities that have been destroyed */
     private ArrayList<DestroyedEntity> deadEntities;
@@ -110,13 +113,15 @@ public class GameScreen implements Screen {
     public enum PlayState {
         PLAY, PAUSE
     }
+    private long lastPowerUpTileSpawn;
+    private final long powerUpSpawnCd = 3000;
 
     /**
      * Constructor which has the game passed in
      *
      * @param game LibGdx game
      */
-    public GameScreen(Kroy game, GameData gameData, String difficulty) {
+    public GameScreen(Kroy game, GameData gameData, DifficultyMode difficulty) {
     	
         this.game = game;
         fpsCounter = new FPSLogger();
@@ -140,16 +145,6 @@ public class GameScreen implements Screen {
         gameState = new GameState();
         camShake = new CameraShake();
         
-        if (difficulty == "MEDIUM") {
-        	difficultyMode Medium = difficultyMode.MEDIUM;
-        	difficultyControl = new DifficultyControl(Medium);
-        } else if (difficulty == "HARD"){
-        	difficultyMode Hard = difficultyMode.HARD;
-        	difficultyControl = new DifficultyControl(Hard);
-        } else if (difficulty == "EASY") {
-        	difficultyMode Easy = difficultyMode.EASY;
-        	difficultyControl = new DifficultyControl(Easy);
-        }
 
         //Orders renderer to start rendering the background, then the player layer, then structures
         mapLayers = map.getLayers();
@@ -164,35 +159,38 @@ public class GameScreen implements Screen {
         patrols = new ArrayList<Patrol>();
         fortresses = new ArrayList<Fortress>();
         deadEntities = new ArrayList<>(7);
+        this.powerUpTiles = new ArrayList<PowerUpTile>();
         
-        roadTiles = getRoadTiles();
+        this.maxPowerUpTiles = 3;
         
-        maxPowerUps = 5;
-        
-        //Initializes PowerUps
-        allPowerUps = new ArrayList<PowerUp>();
-        
+        this.difficultyControl = new DifficultyControl();
         
         if (!(gameData == null)) {
         	
         	for(EngineData engineData : gameData.getEngines()) {
-        		station.spawn(engineData.createEngine(this));
-        		gameState.addFireTruck();
+        		this.station.spawn(engineData.create(this));
+        		this.gameState.addFireTruck();
         	}
         	for(PatrolData patrolData : gameData.getPatrols()) {
-        		patrols.add(patrolData.createPatrol());
+        		this.patrols.add(patrolData.create());
         	}
         	for(FortressData fortressData : gameData.getFortresses()) {
-        		fortresses.add(fortressData.createFortress());
+        		this.fortresses.add(fortressData.create());
         	}
         	for(DestroyedEntityData destroyedEntityData : gameData.getDestroyedEntities()) {
-        		deadEntities.add(destroyedEntityData.createDestroyedEntity());
+        		this.deadEntities.add(destroyedEntityData.create());
+        	}
+        	for(PowerUpTileData powerUpTileData : gameData.getPowerUpTiles()) {
+        		this.powerUpTiles.add(powerUpTileData.create());
         	}
         	
         	this.gameState = gameData.getGameState();
         	this.difficultyControl = gameData.getDifficultyControl();
         }
         else {
+        	
+        	this.difficultyControl.setDifficulty(difficulty);
+        	
             spawn(FireTruckType.Emerald);
             spawn(FireTruckType.Amethyst);
             spawn(FireTruckType.Sapphire);
@@ -212,7 +210,11 @@ public class GameScreen implements Screen {
             fortresses.add(new Fortress(41.95f, 23.5f, FortressType.Museum));
             fortresses.add(new Fortress(44f, 11f, FortressType.CentralHall));
             
-        }
+            this.powerUpTiles.add(new PowerUpTile(new Vector2(2,6), Power.INV));
+            spawnPowerUpTile();
+            spawnPowerUpTile();
+            spawnPowerUpTile();
+            }
 
         // sets the origin point to which all of the polygon's local vertices are relative to.
         for (FireTruck truck : station.getTrucks()) {
@@ -236,6 +238,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+    	
         fpsCounter.log();
 
         camera.update();
@@ -261,13 +264,6 @@ public class GameScreen implements Screen {
         for (DestroyedEntity deadFortress : deadEntities){
             deadFortress.draw(mapBatch);
         }
-        
-        for(PowerUp powerUp : allPowerUps) {
-        	//System.out.println(powerUp + " " + powerUp.getTexture().getWidth() + " " + powerUp.getPosition());
-        	if(!powerUp.isPickedUp()) {
-        		powerUp.drawSprite(mapBatch);
-        	}
-        }
 
         mapBatch.end();
 
@@ -284,6 +280,10 @@ public class GameScreen implements Screen {
                 patrol.drawSprite(mapBatch);
             }
         }
+        for (PowerUpTile powerUpTile : powerUpTiles) {
+        	powerUpTile.drawSprite(mapBatch);
+        }
+
         mapBatch.end();
 
         shapeMapRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -360,11 +360,9 @@ public class GameScreen implements Screen {
 
         station.restoreTrucks();
         station.checkForCollisions();
-
-        spawnPowerUp();
-        checkTimePowerUps();
         
         gameState.setTrucksInAttackRange(0);
+        spawnPowerUpTiles();
 
         for (int i = 0; i < station.getTrucks().size(); i++) {
             FireTruck truck = station.getTruck(i);
@@ -402,6 +400,20 @@ public class GameScreen implements Screen {
 
                 }
             }
+            Iterator<PowerUpTile> iter = powerUpTiles.iterator();
+            while (iter.hasNext()) {
+            	PowerUpTile powerUpTile = iter.next();
+                if (powerUpTile.getPosition().equals(truck.getPosition())) {
+            		truck.getPowerUps().add(powerUpTile.createPowerUp(truck));
+                    iter.remove();
+            	}
+            }
+            
+//            for (PowerUpTile powerUpTile : powerUpTiles) {
+//            	if (powerUpTile.getPosition().equals(truck.getPosition())) {
+//            		truck.getPowerUps().add(powerUpTile.createPowerUp(truck));
+//            	}
+//            }
 
             // check if truck is destroyed
             if (truck.getHP() <= 0) {
@@ -410,9 +422,8 @@ public class GameScreen implements Screen {
                 if (truck.equals(this.selectedTruck)) {
                     this.selectedTruck = null;
                 }
+                
             }
-            
-            checkPowerUpPickUp(truck, allPowerUps);
         }
 
         if (station.getHP() <= 0) {
@@ -497,7 +508,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
@@ -521,86 +531,6 @@ public class GameScreen implements Screen {
         shapeMapRenderer.dispose();
         mapBatch.dispose();
         SoundFX.sfx_soundtrack.stop();
-    }
-
-    private ArrayList<Vector2> getRoadTiles() {
-    	ArrayList<Vector2> roadList = new ArrayList<Vector2>();
-    	for(int x = 0; x<40; x++) {
-    		for(int y = 0; y<25; y++) {
-    			if(isRoad(x,y)) {
-    				Vector2 thisTile = new Vector2(x,y);
-    				roadList.add(thisTile);
-    			}
-    		}
-    	}
-    	return roadList;
-    }
-    
-    /**
-     * Runs through all time power ups to see if any have expired
-     */
-    private void checkTimePowerUps() {
-    	for(int i = 0; i<allPowerUps.size(); i++) {
-    		if(allPowerUps.get(i).isPickedUp() && allPowerUps.get(i).checkTime()) {
-    			allPowerUps.get(i).deactivatePowerUp();
-    			allPowerUps.remove(i);
-    		}
-    	}	
-    }
-    
-    private void checkPowerUpPickUp(FireTruck truck, ArrayList<PowerUp> powerUps) {
-    	for(PowerUp powerUp : powerUps) {
-    		if(truck.getPosition().equals(powerUp.getPosition()) && !powerUp.isPickedUp()) {
-    			powerUp.activatePowerUp(truck);
-    		}
-    	}
-    }
-    
-    private void spawnPowerUp() {
-    	if(allPowerUps.size() < maxPowerUps) {
-    		Random random = new Random();
-    		boolean uniqueTile = false;
-    		Vector2 spawnTile = new Vector2(0,0);
-    		while(!uniqueTile) {
-    			uniqueTile = true;
-    			spawnTile = roadTiles.get(random.nextInt(roadTiles.size()));
-    			for(int i=0; i<allPowerUps.size();i++) {
-    				if(allPowerUps.get(i).getPosition().equals(spawnTile)) {
-    					uniqueTile = false;
-    					break;
-    				}
-    			}
-    		}
-    		
-    		int powerUpChoice = random.nextInt(5);
-    		switch(powerUpChoice) {
-    			case 0:
-    				System.out.println("Speed at " + spawnTile);
-    				SpeedTimePowerUp speedPowerUp = new SpeedTimePowerUp(spawnTile);
-    				allPowerUps.add(speedPowerUp);
-    				break;
-    			case 1:
-    				System.out.println("Invincibility at " + spawnTile);
-    				InvincibilityTimePowerUp invPowerUp = new InvincibilityTimePowerUp(spawnTile);
-    				allPowerUps.add(invPowerUp);
-    				break;
-    			case 2:
-    				System.out.println("Damage at " + spawnTile);
-    				DamageTimePowerUp damagePowerUp = new DamageTimePowerUp(spawnTile);
-    				allPowerUps.add(damagePowerUp);
-    				break;
-    			case 3:
-    				System.out.println("Health at " + spawnTile);
-    				HealthPowerUp healthPowerUp = new HealthPowerUp(spawnTile);
-    				allPowerUps.add(healthPowerUp);
-    				break;
-    			case 4:
-    				System.out.println("Water at " + spawnTile);
-    				RefillWaterPowerUp waterPowerUp = new RefillWaterPowerUp(spawnTile);
-    				allPowerUps.add(waterPowerUp);
-    				break;
-    		}
-    	}
     }
     
     /**
@@ -731,7 +661,7 @@ public class GameScreen implements Screen {
         return this.state;
     }
 
-	public static DifficultyControl getDifficultyControl() {
+	public DifficultyControl getDifficultyControl() {
 		return difficultyControl;
 	}
 
@@ -745,6 +675,47 @@ public class GameScreen implements Screen {
 
 	public Kroy getGame() {
 		return game;
+	}
+	private void spawnPowerUpTiles() {
+		if (System.currentTimeMillis() > lastPowerUpTileSpawn + powerUpSpawnCd) {
+			if (this.powerUpTiles.size() < this.maxPowerUpTiles) {
+				spawnPowerUpTile();
+				this.lastPowerUpTileSpawn = System.currentTimeMillis();
+			}
+		}	
+	}
+	private void spawnPowerUpTile() {
+		Vector2 Tile = new Vector2();
+		while (truckProximityCheck(Tile) == false || isRoad((int)Tile.x, (int)Tile.y) == false 
+				|| isPowerUpTile(Tile) == true) {
+			Tile.x = (int)(Math.random() * (Constants.VIEWPORT_WIDTH - 3));
+			Tile.y = (int)(Math.random() * (Constants.VIEWPORT_HEIGHT - 3));			
+		}
+		this.powerUpTiles.add(new PowerUpTile(Tile));
+	}
+
+	private boolean truckProximityCheck(Vector2 point) {
+		if (!(point == null)) {
+			for (FireTruck truck : this.station.getTrucks()) {
+				if (Math.abs(truck.getPosition().x + 3 - point.x) > 3 &&
+						Math.abs(truck.getPosition().y + 3 - point.y) > 3) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean isPowerUpTile(Vector2 tile) {
+		for (PowerUpTile powerUpTile : this.powerUpTiles)
+			if (powerUpTile.getPosition().equals(tile)) {
+				return true;
+			}
+		return false;
+	}
+
+	public ArrayList<PowerUpTile> getPowerUpTiles() {
+		return powerUpTiles;
 	}
 
 }

@@ -13,7 +13,10 @@ import com.mozarellabytes.kroy.Entities.FireTruck;
 import com.mozarellabytes.kroy.Entities.Fortress;
 import com.mozarellabytes.kroy.Entities.Patrol;
 import com.mozarellabytes.kroy.Screens.GameScreen;
-import com.mozarellabytes.kroy.Utilities.DifficultyControl.difficultyMode;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
+
+import powerUps.PowerUp;
+import powerUps.PowerUpTile;
 
 public class SaveManager {
 	
@@ -31,12 +34,13 @@ public class SaveManager {
 		
 		GameData gameData = new GameData();
 		
-		gameData.setDifficultyControl(gameScreen.getDifficultyControl());
+		gameData.setDifficultyControl(gameScreen.difficultyControl);
 		gameData.setGameState(gameScreen.gameState);
 		gameData.setDestroyedEntities(getDestroyedEntityData(gameScreen));
 		gameData.setEngines(getEngineData(gameScreen));
 		gameData.setPatrols(getPatrolData(gameScreen));
 		gameData.setFortresses(getFortressData(gameScreen));
+		gameData.setPowerUpTiles(getPowerUpTileData(gameScreen));
 
 		fileHandle.writeString(Base64Coder.encodeString(json.prettyPrint(gameData)), false);
 	}
@@ -49,6 +53,16 @@ public class SaveManager {
 			engineData.setHP(truck.getHP());
 			engineData.setReserve(truck.getReserve());
 			engineData.setType(truck.getType());
+			
+			ArrayList<PowerUpData> powerUps = new ArrayList<PowerUpData>();
+			for (PowerUp powerUp : truck.getPowerUps()) {
+				PowerUpData powerUpData = new PowerUpData();
+				powerUpData.setDuration(powerUp.getDuration());
+				powerUpData.setPower(powerUp.getPower());
+				powerUps.add(powerUpData);
+			}
+			engineData.setPowerUps(powerUps);
+			
 			engines.add(engineData);
 		}
 		return engines;
@@ -84,5 +98,15 @@ public class SaveManager {
 			destroyedEntities.add(destroyedEntityData);
 		}
 		return destroyedEntities;
+	}
+	private static ArrayList<PowerUpTileData> getPowerUpTileData(GameScreen gameScreen){
+		ArrayList<PowerUpTileData> powerUpTiles = new ArrayList<PowerUpTileData>();
+		for (PowerUpTile powerUpTile : gameScreen.getPowerUpTiles()) {
+			PowerUpTileData powerUpTileData = new PowerUpTileData();
+			powerUpTileData.setPosition(powerUpTile.getPosition());
+			powerUpTileData.setPower(powerUpTile.getPower());
+			powerUpTiles.add(powerUpTileData);
+		}
+		return powerUpTiles;
 	}
 }

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.mozarellabytes.kroy.GameState;
 import com.mozarellabytes.kroy.Entities.DestroyedEntity;
 import com.mozarellabytes.kroy.Utilities.DifficultyControl;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
+
+import powerUps.PowerUpTile;
 
 public class GameData {
 	private DifficultyControl difficultyControl;
@@ -13,6 +16,7 @@ public class GameData {
 	private ArrayList<FortressData> fortresses;
 	private ArrayList<PatrolData> patrols;
 	private ArrayList<DestroyedEntityData> destroyedEntities;
+	private ArrayList<PowerUpTileData> powerUpTiles;
 
 	public DifficultyControl getDifficultyControl() {
 		return difficultyControl;
@@ -60,5 +64,13 @@ public class GameData {
 
 	public void setDestroyedEntities(ArrayList<DestroyedEntityData> destroyedEntities) {
 		this.destroyedEntities = destroyedEntities;
+	}
+
+	public ArrayList<PowerUpTileData> getPowerUpTiles() {
+		return powerUpTiles;
+	}
+
+	public void setPowerUpTiles(ArrayList<PowerUpTileData> powerUpTiles) {
+		this.powerUpTiles = powerUpTiles;
 	}
 }

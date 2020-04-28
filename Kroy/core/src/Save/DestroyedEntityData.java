@@ -14,7 +14,7 @@ public class DestroyedEntityData {
 	public void setArea(Rectangle area) {
 		this.area = area;
 	}
-	public DestroyedEntity createDestroyedEntity() {
+	public DestroyedEntity create() {
 		return new DestroyedEntity(new Texture(this.deadTexture), this.area);
 	}
 }

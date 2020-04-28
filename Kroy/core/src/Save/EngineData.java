@@ -1,5 +1,7 @@
 package Save;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.mozarellabytes.kroy.Entities.FireTruck;
 import com.mozarellabytes.kroy.Entities.FireTruckType;
@@ -10,6 +12,7 @@ public class EngineData{
 	private float HP;
 	private float reserve;
 	private FireTruckType type;
+	private ArrayList<PowerUpData> powerUps;
 	
 	public void setPosition(Vector2 position) {
 		this.position = position;
@@ -27,10 +30,23 @@ public class EngineData{
 		this.type = type;
 	}
 
-	public FireTruck createEngine(GameScreen gameScreen) {
+	public ArrayList<PowerUpData> getPowerUps() {
+		return powerUps;
+	}
+
+	public void setPowerUps(ArrayList<PowerUpData> powerUps) {
+		this.powerUps = powerUps;
+	}
+
+	public FireTruck create(GameScreen gameScreen) {
 		FireTruck truck = new FireTruck(gameScreen, position, type);
 		truck.setHP(this.HP);
 		truck.setReserve(this.reserve);
+		
+		for (PowerUpData powerUpData : this.powerUps) {
+			truck.getPowerUps().add(powerUpData.create(truck));
+		}
+		
 		return truck;
 	}
 }

@@ -1,6 +1,7 @@
 package com.mozarellabytes.kroy.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -95,6 +96,17 @@ public class LoadScreen implements Screen, InputProcessor {
 	     game.batch.draw(save3Texture, save3Button.x, save3Button.y, save3Button.width, save3Button.height);
 	     game.batch.draw(backTexture, backButton.x, backButton.y, backButton.width, backButton.height);
 		game.batch.end();
+		if(this.mode == true) {
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+				game.setScreen(new MenuScreen(game));
+				this.dispose();
+			}
+		}else {
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+				game.setScreen(parent);
+				this.dispose();
+			}
+		}
 	}
 
 	@Override
@@ -162,6 +174,7 @@ public class LoadScreen implements Screen, InputProcessor {
 				game.setScreen(new MenuScreen(game));
 				this.dispose();
 			}
+			
 		}
 		else {
 			if (save1Button.contains(position.x, position.y)) {
@@ -180,6 +193,7 @@ public class LoadScreen implements Screen, InputProcessor {
 				game.setScreen(parent);
 				this.dispose();
 			}
+			
 		}
 		return true;
 	}

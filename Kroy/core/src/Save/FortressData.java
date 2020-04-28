@@ -18,7 +18,7 @@ public class FortressData {
 	public void setType(FortressType type) {
 		this.type = type;
 	}
-	public Fortress createFortress() {
+	public Fortress create() {
 		Fortress fortress = new Fortress(position.x, position.y, this.type);
 		fortress.setHP(this.HP);
 		return fortress;
