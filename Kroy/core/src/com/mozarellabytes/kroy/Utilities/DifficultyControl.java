@@ -15,6 +15,7 @@ public class DifficultyControl {
     /** The amount of time that has passed since the last increment of difficulty */
     private float currentTime;
     
+    /** Enum to define the values the that difficulty can provide */
     public enum DifficultyMode {
         EASY, MEDIUM, HARD
     }
@@ -76,27 +77,16 @@ public class DifficultyControl {
 	public void setDifficultyChangeInterval(float difficultyChangeInterval) {
 		this.difficultyChangeInterval = difficultyChangeInterval;
 	}
-	
-	public void setDifficultyMedium() {
-		difficulty = DifficultyMode.MEDIUM;
-	}
-	
-	public void setDifficultyHard() {
-		difficulty = DifficultyMode.HARD;
-		System.out.println(currentTime);
-	}
-	
-	public void setDifficultyEasy() {
-		difficulty = DifficultyMode.EASY;
-		System.out.println(currentTime);
-	}
-
 
 	public DifficultyMode getDifficulty() {
 		return difficulty;
 	}
 
-
+	 /** Method sets ModeMultiplier and DifficultyChangeInterval to values depending 
+	 * on the chosen difficulty. With higher Multiplier and lower ChangeInterval making the game harder
+	 * 
+	 * @param difficulty The chosen difficulty from the DifficultyScreen 
+     */
 	public void setDifficulty(DifficultyMode difficulty) {
 		switch (difficulty) {
 	    case EASY:	    	
@@ -115,7 +105,6 @@ public class DifficultyControl {
 	    	currentTime = 45;
 	    	break;	
 	    }
-		System.out.println(difficulty);
 	}
 
 

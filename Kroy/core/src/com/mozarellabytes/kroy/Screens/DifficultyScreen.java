@@ -35,10 +35,18 @@ public class DifficultyScreen implements Screen, InputProcessor {
     private Rectangle backButton;
     private Texture backTexture;
 	
+    /**
+     * Constructor for the Difficultly Screen this code is run on Screen creation
+     * This sets up all assets used with in the screen
+     *
+     * @param game Passes the current game of kroy through to the screen
+     * @param parent Passes the parent screen which in this case with be the MenuScreen
+     */
 	 public DifficultyScreen(final Kroy game, Screen parent) {//true - load, false - save
 		 this.game = game;
 		 this.parent = parent;
 		
+		 
 		 if (parent.getClass().getSimpleName() != null) {
 		 }
 		 camera = new OrthographicCamera();
@@ -46,6 +54,7 @@ public class DifficultyScreen implements Screen, InputProcessor {
 		 backgroundImage = new Texture(Gdx.files.internal("menuscreen_blank_2.png"), true);
 		 backgroundImage.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
 		 
+		 //Assigns png files with Texture vars
 		 this.easyTexture = new Texture(Gdx.files.internal("ui/easy_difficulty.png"), true);
 		 this.mediumTexture = new Texture(Gdx.files.internal("ui/medium_difficulty.png"), true);
 		 this.hardTexture = new Texture(Gdx.files.internal("ui/hard_difficulty.png"), true);
@@ -89,6 +98,9 @@ public class DifficultyScreen implements Screen, InputProcessor {
 	}
 
 	@Override
+	 /* This batch draws all the assets pulled from within the constructor
+     * As well as renders the camera
+     */
 	public void render(float arg0) {
 		 Gdx.gl.glClearColor(51/255f, 34/255f, 99/255f, 1);
 	     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -152,6 +164,10 @@ public class DifficultyScreen implements Screen, InputProcessor {
 	}
 
 	@Override
+	 /** This method processes the mouse inputs for all of the buttons within the screen
+     *	and then sets up the GameScreen with the appropriate difficulty 
+     * 	once selected the assets within this screen then disposed off
+     */
 	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
 		Vector3 position = this.camera.unproject(new Vector3(arg0, arg1, 0));
 		
