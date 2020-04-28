@@ -28,22 +28,22 @@ public enum FortressType {
             new Texture(Gdx.files.internal("sprites/fortress/fortress_walmgate_half.png")),
             new Texture(Gdx.files.internal("sprites/fortress/fortress_walmgate_dead.png"))),
 
-    Clifford ("Clifford's Tower", 500, 7, 125, 8, 4, 3,
+    Clifford ("Clifford's Tower", 500, 7, 125, 10, 4, 3,
             new Texture(Gdx.files.internal("sprites/fortress/fortress_clifford_full.png")),
             new Texture(Gdx.files.internal("sprites/fortress/fortress_clifford_half.png")),
             new Texture(Gdx.files.internal("sprites/fortress/fortress_clifford_dead.png"))),
 
-    CentralHall ("Central Hall", 500, 7, 150, 12, 4, 3,
+    CentralHall ("Central Hall", 500, 7, 150, 15, 4, 3,
             new Texture(Gdx.files.internal("sprites/fortress/UoY_central_hall_full.png")),
             new Texture(Gdx.files.internal("sprites/fortress/UoY_central_hall_half.png")),
             new Texture(Gdx.files.internal("sprites/fortress/UoY_central_hall_dead.png"))),
 
-    Museum ("York Museum", 1500, 8, 150, 12, 4, 3,
+    Museum ("York Museum", 1500, 8, 150, 15, 4, 3,
             new Texture(Gdx.files.internal("sprites/fortress/fortress_yorkshire_museum_full.png")),
             new Texture(Gdx.files.internal("sprites/fortress/fortress_yorkshire_museum_half.png")),
             new Texture(Gdx.files.internal("sprites/fortress/fortress_yorkshire_museum_dead.png"))),
     
-    Railway ("Railway Museum", 1000, 8, 100, 8, 5, 4,
+    Railway ("Railway Museum", 1000, 8, 100, 10, 5, 4,
             new Texture(Gdx.files.internal("sprites/fortress/york_railway_museum_full.png")),
             new Texture(Gdx.files.internal("sprites/fortress/york_railway_museum_half.png")),
             new Texture(Gdx.files.internal("sprites/fortress/york_railway_museum_dead.png")));
