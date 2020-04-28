@@ -64,6 +64,8 @@ public class DanceScreen implements Screen, BeatListener {
     private final int ARROW_SIZE = 96;
 
     private DanceResult lastResult = null;
+    
+    private int counter = 0;
 
 
 
@@ -181,7 +183,11 @@ public class DanceScreen implements Screen, BeatListener {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
+        	counter += 1;
+        	if(counter > 1) {
+        		game.setScreen(new MenuScreen(game));
+        	}
+        	
         }
 
         Gdx.gl.glClearColor(51/255f, 34/255f, 99/255f, 1);

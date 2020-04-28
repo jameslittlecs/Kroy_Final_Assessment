@@ -34,6 +34,8 @@ public class ControlScreenInputHandler implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.ESCAPE:
+            	controlsScreen.changeScreen();
+                break;
             case Input.Keys.C:
                 controlsScreen.changeScreen();
                 break;
