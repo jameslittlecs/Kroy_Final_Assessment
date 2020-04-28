@@ -2,9 +2,14 @@ package powerUps;
 
 import com.mozarellabytes.kroy.Entities.FireTruck;
 
+/** Handles the damage power up */
 public class PowerUp_DMG extends PowerUp {
 	
-	private final float DAMAGECHANGE = 10f;
+	/** @param DAMAGECHANGE is the amount the damage is incremented
+	 * 
+	 */
+	
+	private final float DAMAGECHANGE = 0.3f;
 
 	public PowerUp_DMG(FireTruck truck) {
 		super(truck);

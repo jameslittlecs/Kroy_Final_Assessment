@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.MenuInputHandler;
 import com.mozarellabytes.kroy.Utilities.SoundFX;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 /** This screen is shown after the splash screen and is
  * where the player can choose to start the game or view

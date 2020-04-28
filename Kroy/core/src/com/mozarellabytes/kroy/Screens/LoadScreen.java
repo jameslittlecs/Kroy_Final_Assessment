@@ -15,14 +15,22 @@ import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 import Save.SaveManager;
 
+/**
+ * This is the screen shown when the load button is pushed on the menuScreen. 
+ * This screen allows a player to load the game from a previous save. 
+ */
 public class LoadScreen implements Screen, InputProcessor {
-	
+	/** The game */
 	private final Kroy game;
-	private Screen parent;
-	private boolean mode;
 	public OrthographicCamera camera;
+	private Screen parent;
+	
+	/** If mode is true the screen is in loading state, if false it is in a saving state */
+	private boolean mode;
+	/** The background image of the screen. See menuscreen_blank_2.png*/
 	private Texture backgroundImage;
 	
+	/**Rectangles and textures for all the save buttons*/
     private Rectangle save1Button;
     private Texture save1Texture;
     private Rectangle save2Button;
@@ -32,7 +40,14 @@ public class LoadScreen implements Screen, InputProcessor {
     private Rectangle backButton;
     private Texture backTexture;
 	
-	 public LoadScreen(final Kroy game, Screen parent, boolean mode) {//true - load, false - save
+    /**
+     * Constructs the LoadScreen
+     * 
+     * @param game  LibGDX game
+     * @param parent  The screen this one is created from
+     * @param mode  Shows if the screen is for loading (true) or saving (false)
+     */
+	 public LoadScreen(final Kroy game, Screen parent, boolean mode) {
 		 this.game = game;
 		 this.parent = parent;
 		 this.mode = mode;
@@ -64,6 +79,9 @@ public class LoadScreen implements Screen, InputProcessor {
 		 Gdx.input.setInputProcessor(this);
 	 }
 
+	 /**
+	  * Disposes all the textures
+	  */
 	@Override
 	public void dispose() {
 		backgroundImage.dispose();
@@ -85,6 +103,11 @@ public class LoadScreen implements Screen, InputProcessor {
 		
 	}
 
+	/**
+	 * Renders the loadScreen and all buttons on it. Also checks for escaping the screen.
+	 * 
+	 * @param arg0 The time in seconds since the last render.
+	 */
 	@Override
 	public void render(float arg0) {
 		 Gdx.gl.glClearColor(51/255f, 34/255f, 99/255f, 1);
@@ -159,10 +182,20 @@ public class LoadScreen implements Screen, InputProcessor {
 		return false;
 	}
 
+	
+	/**
+	 * touchUp checks for when the mouse button is released on a save or load button
+	 * 
+	 * @param arg0 X position
+	 * @param arg1 Y position
+	 * @param arg2 Inherited from override
+	 * @param arg3 Inherited from override
+	 */ 
 	@Override
 	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
 		Vector3 position = this.camera.unproject(new Vector3(arg0, arg1, 0));
 		FileHandle fileHandle = null;
+		/** Sets the save to load when screen is in load mode (true)*/
 		if (this.mode == true) {
 			if (save1Button.contains(position.x, position.y)) {
 		        fileHandle = Gdx.files.local("saves/save1.json");
@@ -178,17 +211,20 @@ public class LoadScreen implements Screen, InputProcessor {
 				this.dispose();
 				return true;
 			}
+			/** If the file exists, load the game from that save file*/
 			if (!(fileHandle == null) && (fileHandle.exists())) {
 				game.setScreen(new GameScreen(game, SaveManager.loadGame(fileHandle), DifficultyMode.EASY));
 				this.dispose();
 				return true;
 			}
+			/** If file does not exist, loads nothing and remains on the screen*/
 			else {
 				this.game.setScreen(new LoadScreen(this.game, this.parent, this.mode));
 				this.dispose();
 				return true;
 			}		
 		}
+		/** When game is in save mode (false), calls SaveManager.saveGame to save the game and sets the screen to menu screen*/
 		else {
 			if (save1Button.contains(position.x, position.y)) {
 				SaveManager.saveGame((GameScreen)parent, Gdx.files.local("saves/save1.json"));
