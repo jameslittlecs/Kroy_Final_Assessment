@@ -210,7 +210,7 @@ public class GameScreen implements Screen {
             fortresses.add(new Fortress(41.95f, 23.5f, FortressType.Museum));
             fortresses.add(new Fortress(44f, 11f, FortressType.CentralHall));
             
-            this.powerUpTiles.add(new PowerUpTile(new Vector2(2,6), Power.INV));
+//            this.powerUpTiles.add(new PowerUpTile(new Vector2(2,6), Power.INV));
             spawnPowerUpTile();
             spawnPowerUpTile();
             spawnPowerUpTile();
