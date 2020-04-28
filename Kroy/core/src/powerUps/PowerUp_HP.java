@@ -2,6 +2,7 @@ package powerUps;
 
 import com.mozarellabytes.kroy.Entities.FireTruck;
 
+/** Handles the HP refill power up */
 public class PowerUp_HP extends PowerUp {
 
 	public PowerUp_HP(FireTruck truck) {
@@ -14,6 +15,9 @@ public class PowerUp_HP extends PowerUp {
 		this.power = Power.HP;
 	}
 
+	/** sets the truck collecting the power ups damage to max
+	 * 
+	 */
 	@Override
 	protected void activate() {
 		this.truck.setHP(this.truck.getType().getMaxHP());

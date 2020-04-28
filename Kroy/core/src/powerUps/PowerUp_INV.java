@@ -1,5 +1,6 @@
 package powerUps;
 
+/** Handles the invincibility power up */
 import com.mozarellabytes.kroy.Entities.FireTruck;
 
 public class PowerUp_INV extends PowerUp {
