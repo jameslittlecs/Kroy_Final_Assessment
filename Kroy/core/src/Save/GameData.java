@@ -8,7 +8,10 @@ import com.mozarellabytes.kroy.Utilities.DifficultyControl;
 import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 import powerUps.PowerUpTile;
-
+/**
+ * class to represent a save file, contains all data required to save and load a game
+ *
+ */
 public class GameData {
 	private DifficultyControl difficultyControl;
 	private GameState gameState;

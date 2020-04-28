@@ -7,7 +7,12 @@ import com.mozarellabytes.kroy.Entities.FireTruck;
 import com.mozarellabytes.kroy.Entities.FireTruckType;
 import com.mozarellabytes.kroy.Screens.GameScreen;
 
+/**
+ * class to represent the data required to save and load an engine
+ *
+ */
 public class EngineData{
+	
 	private Vector2 position;
 	private float HP;
 	private float reserve;

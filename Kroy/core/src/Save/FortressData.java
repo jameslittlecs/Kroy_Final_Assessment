@@ -3,7 +3,10 @@ package Save;
 import com.badlogic.gdx.math.Vector2;
 import com.mozarellabytes.kroy.Entities.Fortress;
 import com.mozarellabytes.kroy.Entities.FortressType;
-
+/**
+ * class to represent the data required to save and load a fortress
+ *
+ */
 public class FortressData {
 	private Vector2 position;
 	private float HP;

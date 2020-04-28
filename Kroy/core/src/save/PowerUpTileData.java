@@ -4,7 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 
 import powerUps.Power;
 import powerUps.PowerUpTile;
-
+/**
+ * class to represent the data required to save and load a powerUpTile
+ *
+ */
 public class PowerUpTileData {
 	private Vector2 position;
 	private Power power;

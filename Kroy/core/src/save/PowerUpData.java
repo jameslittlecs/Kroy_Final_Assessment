@@ -9,7 +9,10 @@ import powerUps.PowerUp_HP;
 import powerUps.PowerUp_INV;
 import powerUps.PowerUp_SPEED;
 import powerUps.PowerUp_WATER;
-
+/**
+ * class to represent the data required to save and load the powerUp of an engine
+ *
+ */
 public class PowerUpData {
 	private Power power;
 	private long duration;

@@ -20,8 +20,15 @@ import powerUps.PowerUpTile;
 
 public class SaveManager {
 	
+
+	// libgdx json loader
 	private static Json json = new Json();
 	
+	/**
+	 * 
+	 * @param fileHandle - file path of save data
+	 * @return - GameData object of decoded savefile, null if file doesn't exist
+	 */
 	public static GameData loadGame(FileHandle fileHandle) {
 		if (fileHandle.exists()) {
 			return json.fromJson(GameData.class, Base64Coder.decodeString(fileHandle.readString()));
@@ -30,6 +37,11 @@ public class SaveManager {
 			return null;
 		}
 	}
+	/**
+	 * creates a GameData object, sets it values, encodes it and writes it to json file
+	 * @param gameScreen 
+	 * @param fileHandle - file path of where to save to
+	 */
 	public static void saveGame(GameScreen gameScreen, FileHandle fileHandle) {
 		
 		GameData gameData = new GameData();
@@ -44,6 +56,11 @@ public class SaveManager {
 
 		fileHandle.writeString(Base64Coder.encodeString(json.prettyPrint(gameData)), false);
 	}
+	/**
+	 * creates an ArrayList of EngineData each one corresponding to an engine in the game
+	 * @param gameScreen
+	 * @return
+	 */
 	private static ArrayList<EngineData> getEngineData(GameScreen gameScreen) {
 		ArrayList<EngineData> engines = new ArrayList<EngineData>();
 		for (FireTruck truck : gameScreen.getStation().getTrucks()) {
@@ -67,6 +84,11 @@ public class SaveManager {
 		}
 		return engines;
 	}
+	/**
+	 * creates an ArrayList of PatrolData each one corresponding to a Patrol in the game
+	 * @param gameScreen
+	 * @return
+	 */
 	private static ArrayList<PatrolData> getPatrolData(GameScreen gameScreen) {
 		ArrayList<PatrolData> patrols = new ArrayList<PatrolData>();
 		for (Patrol patrol : gameScreen.getPatrols()) {
@@ -78,6 +100,11 @@ public class SaveManager {
 		}
 		return patrols;
 	}
+	/**
+	 * creates an ArrayList of FortressData each one corresponding to a Fortress in the game
+	 * @param gameScreen
+	 * @return
+	 */
 	private static ArrayList<FortressData> getFortressData(GameScreen gameScreen){
 		ArrayList<FortressData> fortresses = new ArrayList<FortressData>();
 		for (Fortress fortress : gameScreen.getFortresses()) {
@@ -89,6 +116,11 @@ public class SaveManager {
 		}
 		return fortresses;
 	}
+	/**
+	 * creates an ArrayList of DestroyedEntityData each one corresponding to a DestroyedEntity in the game
+	 * @param gameScreen
+	 * @return
+	 */
 	private static ArrayList<DestroyedEntityData> getDestroyedEntityData(GameScreen gameScreen){
 		ArrayList<DestroyedEntityData> destroyedEntities = new ArrayList<DestroyedEntityData>();
 		for (DestroyedEntity destroyedEntity : gameScreen.getDeadEntities()) {
@@ -99,6 +131,11 @@ public class SaveManager {
 		}
 		return destroyedEntities;
 	}
+	/**
+	 * creates an ArrayList of PowerUpData each one corresponding to a PowerUpTile in the game
+	 * @param gameScreen
+	 * @return
+	 */
 	private static ArrayList<PowerUpTileData> getPowerUpTileData(GameScreen gameScreen){
 		ArrayList<PowerUpTileData> powerUpTiles = new ArrayList<PowerUpTileData>();
 		for (PowerUpTile powerUpTile : gameScreen.getPowerUpTiles()) {
