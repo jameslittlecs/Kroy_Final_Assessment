@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mozarellabytes.kroy.Kroy;
 import com.mozarellabytes.kroy.Utilities.MenuInputHandler;
 import com.mozarellabytes.kroy.Utilities.SoundFX;
+import com.mozarellabytes.kroy.Utilities.DifficultyControl.DifficultyMode;
 
 /** This screen is shown after the splash screen and is
  * where the player can choose to start the game or view
@@ -207,7 +208,7 @@ public class MenuScreen implements Screen {
 
     /** Changes the screen from menu screen to game screen */
     public void toGameScreen() {
-        game.setScreen(new DifficultyScreen(game, this));
+        game.setScreen(new GameScreen(game, null, DifficultyMode.EASY));
         this.dispose();
     }
     public void toLoadScreen() {   	 
