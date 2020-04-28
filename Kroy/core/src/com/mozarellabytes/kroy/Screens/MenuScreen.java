@@ -208,7 +208,7 @@ public class MenuScreen implements Screen {
 
     /** Changes the screen from menu screen to game screen */
     public void toGameScreen() {
-        game.setScreen(new GameScreen(game, null, DifficultyMode.EASY));
+        game.setScreen(new DifficultyScreen(game, this));
         this.dispose();
     }
     public void toLoadScreen() {   	 
