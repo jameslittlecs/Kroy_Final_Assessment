@@ -40,8 +40,7 @@ public class GameInputHandler implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.ESCAPE:
-                Gdx.app.exit();
-                System.exit(1);
+            	gameScreen.toHomeScreen();
                 break;
                 /* Outdated code
             case Input.Keys.A:
