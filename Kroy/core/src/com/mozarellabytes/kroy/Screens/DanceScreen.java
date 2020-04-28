@@ -186,6 +186,7 @@ public class DanceScreen implements Screen, BeatListener {
         	counter += 1;
         	if(counter > 1) {
         		game.setScreen(new MenuScreen(game));
+        		this.dispose();
         	}
         	
         }
